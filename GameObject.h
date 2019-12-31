@@ -28,6 +28,8 @@ public:
 
 	void setPos(const Vector2D &pos){m_pos = pos;}
 
+    void setTextureID(const TextureID &tid) {m_textureID = tid;}
+
     const GameObjectID &getGameObjectID() const {
         return m_gameObjectID;
     }

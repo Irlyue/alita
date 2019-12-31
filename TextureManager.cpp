@@ -1,5 +1,6 @@
 #include "TextureManager.h"
 #include "Game.h"
+#include "Utility.h"
 
 
 static SDL_Texture *loadTexture(const std::string &path){
@@ -25,8 +26,8 @@ bool TextureManager::loadGlobalTextures(){
         std::string type = it->Value();
         if(type == "PackedImages"){
             PackedImages *p = new PackedImages;
-            std::string binaryPath = root + FILE_DELIMITER + it->Attribute("binaryPath");
-            std::string offsetsPath = root + FILE_DELIMITER + it->Attribute("offsetsPath");
+            std::string binaryPath = NP(root + FILE_DELIMITER + it->Attribute("binaryPath"));
+            std::string offsetsPath = NP(root + FILE_DELIMITER + it->Attribute("offsetsPath"));
             if(p->init(binaryPath,  offsetsPath)){
                 successCount++;
             }else{
@@ -35,7 +36,7 @@ bool TextureManager::loadGlobalTextures(){
             }
             m_packedImagesMaps[id] = p;
         }else if(type == "Texture"){
-            std::string path = root + FILE_DELIMITER + it->Attribute("path");
+            std::string path = NP(root + FILE_DELIMITER + it->Attribute("path"));
             SDL_Texture *pTexture = loadTexture(path);
 
             if(pTexture){

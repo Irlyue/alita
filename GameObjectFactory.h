@@ -7,8 +7,8 @@
 #include "MenuButton.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "Level.h"
 #include "Entrance.h"
+#include "NPCharacter.h"
 
 class GameObjectFactory{
 public:

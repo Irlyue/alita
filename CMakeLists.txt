@@ -11,6 +11,7 @@ add_executable(alita main.cpp Game.cpp InputHandler.cpp Vector2D.h
     GameObject.cpp GameObjectFactory.cpp GameState.cpp GameStateMachine.cpp
     MenuButton.cpp MenuState.cpp Player.cpp PlayState.cpp TextureManager.cpp
     CallBack.cpp PauseState.cpp Bullet.cpp PackedImages.cpp GameMap.cpp
-    Level.cpp TileLayer.cpp SpriteAnimation.cpp)
+    SpriteAnimation.cpp EventManager.cpp EventData.cpp Entrance.cpp
+    MapManager.cpp Utility.cpp NPCharacter.cpp)
 
 target_link_libraries(alita SDL2 SDL2_image tinyxml2)

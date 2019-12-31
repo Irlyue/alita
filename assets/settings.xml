@@ -3,7 +3,7 @@
     <StartMenuState>
     </StartMenuState>
 
-    <PlayState mapID="0301"/>
+    <PlayState mapID="0101"/>
 
     <PauseState>
         <MenuResumeButton/>
@@ -21,16 +21,15 @@
     <Entrance x="10" y="200" width="200" height="80" textureID="MAIN_BTN" callback="cbChangeToStartMenuState"/>
     <Player id="-1" x="10" y="200" width="101" height="43" lives="4" textureID="HELICOPTER" friction="0.9" acceleration="12.0"
             waitFireTime="200"/>
+    <NPCharacter />
 
     <PlayerBullet textureID="BULLET_ONE" x="0" y="0" width="11" height="11" damage="2" speed="24"/>
     <EnemyBullet textureID="BULLET_TWO" x="0" y="0" width="16" height="16" damage="2"/>
 
-	<Level path="assets\levels.xml" />
-
 </GameObjects>
 
 <Textures>
-    <Global folder="D:\software\LPFCQDJB31\LPFCQDJB31\Date">
+    <Global folder="/home/wenfeng/Desktop/LPFCQDJB31/Date">
         <PackedImages id="FLOOR" binaryPath="Floor.dat" offsetsPath="Floor.mxx" />
         <PackedImages id="GAME" binaryPath="Game.dat" offsetsPath="Game.mxx" />
         <PackedImages id="FJ_1" binaryPath="Fj\1.dat" offsetsPath="Fj\1.mxx" />
@@ -59,6 +58,17 @@
 
         <!-- RPG -->
         <PackedImages id="RPG_0" binaryPath="Rpg\26.Dat" offsetsPath="Rpg\26.Mxx"/>
+
+        <!-- NPC -->
+        <PackedImages id="NPC_01" binaryPath="Npc\1.Dat" offsetsPath="Npc\1.Mxx"/>
+        <PackedImages id="NPC_02" binaryPath="Npc\2.Dat" offsetsPath="Npc\2.Mxx"/>
+        <PackedImages id="NPC_03" binaryPath="Npc\3.Dat" offsetsPath="Npc\3.Mxx"/>
+        <PackedImages id="NPC_04" binaryPath="Npc\4.Dat" offsetsPath="Npc\4.Mxx"/>
+        <PackedImages id="NPC_05" binaryPath="Npc\5.Dat" offsetsPath="Npc\5.Mxx"/>
+        <PackedImages id="NPC_08" binaryPath="Npc\8.Dat" offsetsPath="Npc\8.Mxx"/>
+        <PackedImages id="NPC_10" binaryPath="Npc\10.Dat" offsetsPath="Npc\10.Mxx"/>
+        <PackedImages id="NPC_52" binaryPath="Npc\52.Dat" offsetsPath="Npc\52.Mxx"/>
+        <PackedImages id="NPC_53" binaryPath="Npc\53.Dat" offsetsPath="Npc\53.Mxx"/>
 
     </Global>
 

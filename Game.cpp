@@ -65,7 +65,7 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     SDL_SetWindowIcon(m_pWindow, IMG_Load(m_pTextureManager->getTexturePath("ICON").c_str()));
 
 	m_pMapManager = new MapManager;
-	if(!m_pMapManager->init("assets\\maps.xml")){
+	if(!m_pMapManager->init("assets/maps.xml")){
 		printf("MapManager failed to initialize\n");
 		return false;
 	}
@@ -80,14 +80,17 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     m_pGameObjectFactory->add("StartMenuButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuExitButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuPlayButton", MenuButton::creator);
+    m_pGameObjectFactory->add("MenuResumeButton", MenuButton::creator);
+    m_pGameObjectFactory->add("MenuMainButton", MenuButton::creator);
     m_pGameObjectFactory->add(Player::s_type, Player::creator);
-    m_pGameObjectFactory->add(Level::s_type, Level::creator);
 	m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
+	m_pGameObjectFactory->add(NPCharacter::s_type, NPCharacter::creator);
 
     m_pGameStateMachine = new GameStateMachine;
     m_pGameStateMachine->init(m_pDoc->FirstChildElement("GameStates"));
     m_pGameStateMachine->add(StartMenuState::s_gameStateType, StartMenuState::creator);
     m_pGameStateMachine->add(PlayState::s_gameStateType, PlayState::creator);
+    m_pGameStateMachine->add(PauseState::s_gameStateType, PauseState::creator);
 
     m_pGameStateMachine->changeState(m_pGameStateMachine->create("StartMenuState"));
 

@@ -1,4 +1,5 @@
 #include "MapManager.h"
+#include "Utility.h"
 #include <fstream>
 
 
@@ -27,7 +28,7 @@ GameMap *MapManager::create(GameMapID gid){
 	GameMap *pMap = new GameMap;
 	pMap->init(m_mapPaths[gid]);
 	pMap->setGameMapID(gid);
-	std::fstream fs("assets\\map.csv", std::fstream::out);
+	std::fstream fs(NP("assets/map.csv"), std::fstream::out);
 	fs << (*pMap);
 	fs.close();
 	return pMap;

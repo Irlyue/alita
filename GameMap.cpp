@@ -75,8 +75,13 @@ std::ostream &operator<<(std::ostream &os, GameMap &gm){
 			GameMapGrid &gmg = gm(i, j);
 			os << gmg.floorID << '*';
 			os << gmg.tileID << '*';
-			os << gmg.other << '*';
-			os << gmg.roleID << ',';
+            if(gmg.other != ""){
+                os << '(' << gmg.other << ')';
+            }
+            if(gmg.roleID != ""){
+                os << '(' << gmg.roleID << ')';
+            }
+            os << ',';
 		}
 		os<<std::endl;
 	}

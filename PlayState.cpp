@@ -2,6 +2,7 @@
 #include "InputHandler.h"
 #include "Game.h"
 #include "Utility.h"
+#include "NPCharacter.h"
 
 const GameStateType PlayState::s_gameStateType = "PlayState";
 
@@ -43,6 +44,17 @@ bool PlayState::initFromGameMap(){
 	for (int k = 0; k < m_pgm->getRows() * m_pgm->getCols(); k++) {
 		int i = k / m_pgm->getCols();
 		int j = k % m_pgm->getCols();
+		Vector2D tilePos(j * tileWidth, i * tileHeight);
+
+		std::string roleID = (*m_pgm)(i, j).roleID;
+		if(roleID[0] == 'N'){
+			NPCharacter *pnpc = (NPCharacter*)(g_alita->getGameObjectFactory()->create(NPCharacter::s_type));
+			addGameObject(pnpc);
+
+			pnpc->setPos(tilePos);
+			TextureID tid = "NPC_" + roleID.substr(roleID.size() - 2, 2);
+			pnpc->setTextureID(tid);
+		}
 
 		std::string &other = (*m_pgm)(i, j).other;
 		if (other != "") {
@@ -51,8 +63,8 @@ bool PlayState::initFromGameMap(){
 				Entrance *pEn = (Entrance*)(g_alita->getGameObjectFactory()->create(Entrance::s_type));
 				int enterPosOffset = -1;
 
-				// if "Me", switch between the same map, no need to load a new map
-				if(other.substr(0, 2) == "Me"){
+				// if "me", switch between the same map, no need to load a new map
+				if(toLower(other.substr(0, 2)) == "me"){
 					pEn->setToWhere(m_pgm->getGameMapID());
 					enterPosOffset = 2;
 				}else{
@@ -63,11 +75,11 @@ bool PlayState::initFromGameMap(){
 				Vector2D enterPos(std::stod(other.substr(enterPosOffset, 4)) * tileWidth,
 					std::stod(other.substr(enterPosOffset + 4, 4)) * tileHeight);
 				pEn->setEnterPos(enterPos);
-				pEn->addGrid({j * tileWidth, i * tileHeight});
+				pEn->addGrid(tilePos);
 				addGameObject(pEn);
 			}
 			else {
-				it->second->addGrid({j * tileWidth, i * tileHeight});
+				it->second->addGrid(tilePos);
 			}
 		}
 	}
@@ -133,7 +145,7 @@ Vector2D PlayState::searchAroundEntrance(const Vector2D &center){
 		for(int j = -2; j < 3; j++){
 			int di = ci + i;
 			int dj = cj + j;
-			if((*m_pgm)(di, dj).roleID == "1" && (*m_pgm)(di, dj).other == ""){
+			if((*m_pgm)(di, dj).roleID == "0" && (*m_pgm)(di, dj).other == ""){
 				space.setX(dj * g_alita->getTileWidth());
 				space.setY(di * g_alita->getTileHeight());
 				return space;
