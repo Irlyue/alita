@@ -9,14 +9,14 @@ bool GameState::init(XMLElement *doc){
 };
 
 void GameState::update(){
-    for(auto &obj: m_gameObjects){
-        obj->update();
+    for(auto it: m_gameObjects){
+        it.second->update();
     }
 }
 
 void GameState::render(){
-    for(auto &obj: m_gameObjects){
-        obj->draw();
+    for(auto it: m_gameObjects){
+        it.second->draw();
     }
 }
 
@@ -37,9 +37,32 @@ bool GameState::onEnter() {
 
 bool GameState::onExit() {
     printf("Exit %s...\n", getGameStateType().c_str());
-    for(auto &obj: m_gameObjects){
-        obj->destroy();
+    for(auto it: m_gameObjects){
+        it.second->destroy();
     }
     m_gameObjects.clear();
     return true;
 };
+
+bool GameState::addGameObject(GameObject *pGameObj) {
+	auto findIt = m_gameObjects.find(pGameObj->getGameObjectID());
+
+	if(findIt != m_gameObjects.cend()){
+		printf("Adding %s object with duplicate ids!\n", pGameObj->getObjectType().c_str());
+		return false;
+	}else{
+		m_gameObjects[pGameObj->getGameObjectID()] = pGameObj;
+		return true;
+	}
+};
+
+bool GameState::removeGameObject(GameObjectID objID){
+	auto findIt = m_gameObjects.find(objID);
+	if(findIt != m_gameObjects.end()){
+		delete findIt->second;
+		m_gameObjects.erase(findIt);
+		return true;
+	}else{
+		return false;
+	}
+}

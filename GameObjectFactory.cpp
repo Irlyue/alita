@@ -10,8 +10,10 @@ GameObjectFactory *GameObjectFactory::getInstance(){
     return s_pGameObjectFactory;
 }
 
-void GameObjectFactory::init(XMLDocument *doc){
+bool GameObjectFactory::init(XMLElement *doc){
     m_pGameObjectInfos = doc;
+
+	return true;
 }
 
 void GameObjectFactory::add(const ObjectType &objType, GameObjectCreator creator){
@@ -23,7 +25,7 @@ GameObject *GameObjectFactory::create(const ObjectType &objType){
     auto it = m_ObjectCreatorMaps.find(objType);
     if(it != m_ObjectCreatorMaps.cend()){
         GameObject *pGameObject = it->second();
-        pGameObject->init(m_pGameObjectInfos->FirstChildElement("GameObjects")->FirstChildElement(objType.c_str()));
+        pGameObject->init(m_pGameObjectInfos->FirstChildElement(objType.c_str()));
         return pGameObject;
     }
     printf("Object type `%s` not found!\n", objType.c_str());

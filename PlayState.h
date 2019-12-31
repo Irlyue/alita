@@ -2,7 +2,7 @@
 #define ALITA_PLAY_STATE_H
 
 #include "GameState.h"
-#include "Level.h"
+#include "GameMap.h"
 
 class PlayState: public GameState{
 public:
@@ -20,8 +20,19 @@ public:
     virtual void update() override;
 
 private:
-    Level *m_pLevel = nullptr;
 
+	GameMap *m_pgm = nullptr;
+
+	void renderTileLayer();
+
+	void onPlayerMove(IEventDataPtr pEvent);
+	void onCreateLevel(IEventDataPtr pEvent);
+	void onDestroyGameObject(IEventDataPtr pEvent);
+	bool initFromGameMap();
+
+	Vector2D searchAroundEntrance(const Vector2D &center);
+	
+	void destroy();
 };
 
 #endif

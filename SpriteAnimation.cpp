@@ -9,7 +9,7 @@ bool SpriteAnimation::init(const std::string &id){
     m_motionStack.push_back(MOTION_STILL);
 
     std::fstream fs;
-    fs.open("/home/wenfeng/Desktop/LPFCQDJB31/Date/Rpg/26.Zb", std::fstream::in);
+    fs.open("D:\\software\\LPFCQDJB31\\LPFCQDJB31\\Date\\Rpg\\26.Zb", std::fstream::in);
 
     if(!fs){
         printf("Error\n");

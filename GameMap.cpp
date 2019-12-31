@@ -1,6 +1,7 @@
 #include "GameMap.h"
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 
 GameMapGrid &GameMap::operator()(int i, int j){
@@ -65,4 +66,20 @@ bool GameMap::init(std::string path){
     // For now, just ignore them.
 
     return true;
+}
+
+std::ostream &operator<<(std::ostream &os, GameMap &gm){
+
+	for(int i = 0; i < gm.getRows(); i++){
+		for(int j = 0; j < gm.getCols(); j++){
+			GameMapGrid &gmg = gm(i, j);
+			os << gmg.floorID << '*';
+			os << gmg.tileID << '*';
+			os << gmg.other << '*';
+			os << gmg.roleID << ',';
+		}
+		os<<std::endl;
+	}
+
+	return os;
 }

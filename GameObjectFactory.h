@@ -8,11 +8,12 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Level.h"
+#include "Entrance.h"
 
 class GameObjectFactory{
 public:
 
-    void init(XMLDocument *doc);
+    bool init(XMLElement *doc);
 
     void add(const ObjectType &objType, GameObjectCreator creator);
 
@@ -24,7 +25,7 @@ private:
     static GameObjectFactory *s_pGameObjectFactory;
     std::map<ObjectType, GameObjectCreator> m_ObjectCreatorMaps;
 
-    XMLDocument *m_pGameObjectInfos;
+    XMLElement *m_pGameObjectInfos;
 
 };
 

@@ -5,13 +5,14 @@
 #include <codecvt>
 #include <cwchar>
 #include <iostream>
+#include <cstdio>
 
 int main(int, char**){
     // disable output buffer, so the outputs are flushed immediately.
     setbuf(stdout, nullptr);
 
     Game *game = Game::getInstance();
-    if(!game->init("Alita", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480)){
+    if(!game->init("Alita", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 730, 480)){
         printf("Woops! Something is wrong!\n");
         return -1;
     }
@@ -32,7 +33,7 @@ int main(int, char**){
         if(elapsed < FRAME_TIME){
             SDL_Delay(FRAME_TIME - elapsed);
         }
-        if(frame % 100 == 0)
+        if(frame % 10 == 0)
             printf("%d\n", elapsed);
     }
 

@@ -2,12 +2,12 @@
 #define ALITA_GAME_STATE_H
 
 #include <string>
-#include <vector>
+#include <map>
 #include "GameObject.h"
 
 using GameStateType = std::string;
 using GameStateID = std::string;
-using GameObjectList = std::vector<GameObject*>;
+using GameObjectMap = std::map<GameObjectID, GameObject*>;
 
 class GameState{
 public:
@@ -27,12 +27,12 @@ public:
 
     virtual const GameStateType &getGameStateType() = 0;
 
-    void addGameObject(GameObject *pGameObj){
-        m_gameObjects.push_back(pGameObj);
-    };
+	bool removeGameObject(GameObjectID objID);
+
+    bool addGameObject(GameObject *pGameObj);
 
 protected:
-    GameObjectList m_gameObjects;
+    GameObjectMap m_gameObjects;
     GameStateID m_gameStateID;
 
     XMLElement *m_pGameStateInfo = nullptr;

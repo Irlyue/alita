@@ -9,25 +9,21 @@ class TileLayer: public Layer{
 public:
     friend class LevelParser;
 
-    bool init(std::string path);
-
     virtual void update();
 
     virtual void draw();
 
-    int getRows() const {return m_gm.getRows();}
-    int getCols() const {return m_gm.getCols();}
+    int getRows() const {return m_pParentLevel->getGameMap().getRows();}
+    int getCols() const {return m_pParentLevel->getGameMap().getCols();}
     bool isInsideTilemap(int i, int j) const;
 
 private:
-    int m_tileWidth = 48;
-    int m_tileHeight = 32;  // grid size of one tile
 
-    Vector2D m_pos;
     Vector2D m_acceleration;
     Vector2D m_velocity;
 
-    GameMap m_gm;
+
+
 };
 
 

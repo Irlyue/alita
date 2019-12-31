@@ -3,8 +3,6 @@
 
 
 void TileLayer::update(){
-    m_pos.setX(240);
-    m_pos.setY(240);
     return;
 
     auto pInputHandler = g_alita->getInputHandler();
@@ -27,7 +25,6 @@ void TileLayer::update(){
     }
     m_velocity *= 0.9;
     m_velocity += m_acceleration;
-    m_pos += m_velocity;
 }
 
 
@@ -35,17 +32,22 @@ void TileLayer::draw(){
     // i and j denote tile indices
     // x and y denote real pixels
 
-    // draw one more tile in the right and bottom to eliminate some nasty effects
-    int visibleCols = Game::getInstance()->getWindowWidth() / m_tileWidth + 2;
-    int visibleRows = Game::getInstance()->getWindowHeight() / m_tileHeight + 2;
+	int tileWidth = g_alita->getTileWidth();
+	int tileHeight = g_alita->getTileHeight();
 
-    int offset_i = m_pos.getY() / m_tileHeight;
-    int offset_j = m_pos.getX() / m_tileWidth;
-    int offset_x = static_cast<int>(m_pos.getX()) % m_tileWidth;
-    int offset_y = static_cast<int>(m_pos.getY()) % m_tileHeight;
+    // draw one more tile in the right and bottom to eliminate some nasty effects
+    int visibleCols = Game::getInstance()->getWindowWidth() / tileWidth + 2;
+    int visibleRows = Game::getInstance()->getWindowHeight() / tileHeight + 2;
+
+	Vector2D &pos = m_pParentLevel->getPos();
+    int offset_i = pos.getY() / tileHeight;
+    int offset_j = pos.getX() / tileWidth;
+    int offset_x = static_cast<int>(pos.getX()) % tileWidth;
+    int offset_y = static_cast<int>(pos.getY()) % tileHeight;
 
     TextureManager *pTextureManager = g_alita->getTextureManager();
     int oi, oj, floorID, tileID, x, y;
+	GameMap &gm = m_pParentLevel->getGameMap();
     for(int i = 0; i < visibleRows; i++){
         for(int j = 0; j < visibleCols; j++){
             oi = i + offset_i;
@@ -55,27 +57,23 @@ void TileLayer::draw(){
             if(!isInsideTilemap(oi, oj))
                 continue;
 
-            floorID = m_gm(oi, oj).floorID;
-            tileID = m_gm(oi, oj).tileID;
-            x = j * m_tileWidth - offset_x;
-            y = i * m_tileHeight - offset_y;
+            floorID = gm(oi, oj).floorID;
+            tileID = gm(oi, oj).tileID;
+            x = j * tileWidth - offset_x;
+            y = i * tileHeight - offset_y;
 
             if(floorID != -1){
                 pTextureManager->drawTile("FLOOR", floorID, x, y,
-                                          m_tileWidth, m_tileHeight, g_alita->getRenderer());
+                                          tileWidth, tileHeight, g_alita->getRenderer());
             }
             if(tileID != -1){
                 pTextureManager->drawTile("FJ_" + std::to_string(tileID/10000), tileID%10000, x, y,
-                                          m_tileWidth, m_tileHeight, g_alita->getRenderer());
+                                          tileWidth, tileHeight, g_alita->getRenderer());
             }
         }
     }
 }
 
-bool TileLayer::init(std::string path){
-    return m_gm.init(path);
-}
-
 bool TileLayer::isInsideTilemap(int i, int j) const {
-    return m_gm.isInsideMap(i, j);
+    return m_pParentLevel->getGameMap().isInsideMap(i, j);
 }

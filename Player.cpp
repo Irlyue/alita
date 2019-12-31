@@ -91,13 +91,18 @@ void Player::update(){
         motion = MOTION_DIRECT_ATTACK;
     }
 
-    m_acceleration.normalize();
-    m_acceleration *= m_acc;
+    //m_acceleration.normalize();
+    //m_acceleration *= m_acc;
 
     m_velocity *= m_friction;
     m_velocity +=  m_acceleration;
     m_pos += m_acceleration;
     m_pPlayerAnimation->onMotionChanged(m_pos, motion, orientation);
+
+	if(!m_acceleration.isZero()){
+		auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
+		g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+	}
 
     m_currentFrame = (m_frame / 4) % m_nbSprites;
 }
@@ -110,9 +115,11 @@ void Player::draw(){
     // Vector2D wh = g_alita->getTextureManager()->getTextureSize("RPG_0", m_spriteOffset + m_currentFrame);
     // g_alita->getTextureManager()->drawTile("RPG_0", m_spriteOffset + m_currentFrame,
     //                                        m_pos.getX(), m_pos.getY(), -1, -1, g_alita->getRenderer());
-    m_pPlayerAnimation->VDraw();
+    // m_pPlayerAnimation->VDraw();
 
-    SDL_Rect rect = {m_pos.getX(), m_pos.getY(), 5, 5};
+	auto &levelPos = g_alita->getLevelPos();
+    SDL_Rect rect = {m_pos.getX() - levelPos.getX(), m_pos.getY() - levelPos.getY(), 5, 5};
     SDL_SetRenderDrawColor(g_alita->getRenderer(), 0xff, 0x00, 0x00, 0xff);
     SDL_RenderFillRect(g_alita->getRenderer(), &rect);
 }
+

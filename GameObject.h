@@ -4,12 +4,16 @@
 #include "tinyxml2.h"
 #include "Vector2D.h"
 #include "AlitaStd.h"
+#include "EventManager.h"
+#include <vector>
 
 using CallBackFunc = void(*)();
+using DelegatePair = std::pair<EventType, EventListenerDelegate>;
 
 class GameObject{
 public:
     virtual bool init(const XMLElement *doc);
+	virtual ~GameObject() {destroy();}
 
     virtual void destroy() {};
 
@@ -22,11 +26,17 @@ public:
     Vector2D &getVelocity() {return m_velocity;}
     Vector2D &getPos() {return m_pos;}
 
+	void setPos(const Vector2D &pos){m_pos = pos;}
+
     const GameObjectID &getGameObjectID() const {
         return m_gameObjectID;
     }
 
+	void removeAllDelegates();
+
 protected:
+
+	std::vector<DelegatePair> m_delegates;
     static int s_defaultGameObjectID;
     Vector2D m_pos;
     Vector2D m_velocity;

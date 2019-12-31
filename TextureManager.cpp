@@ -79,7 +79,7 @@ Vector2D TextureManager::getTextureSize(const TextureID &tid, int offset){
     SDL_Texture *p = getTexture(tid, offset);
     int w, h;
     SDL_QueryTexture(p, nullptr, nullptr, &w, &h);
-    return {w, h};
+    return {(float)w, (float)h};
 }
 
 std::string TextureManager::getTexturePath(const TextureID &tid){

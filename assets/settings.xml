@@ -3,10 +3,7 @@
     <StartMenuState>
     </StartMenuState>
 
-    <PlayState>
-        <Level />
-        <Player />
-    </PlayState>
+    <PlayState mapID="0301"/>
 
     <PauseState>
         <MenuResumeButton/>
@@ -21,46 +18,47 @@
     <MenuResumeButton x="10" y="10" width="200"  height="80" textureID="RESUME_BTN" callback="cbResume" />
     <MenuMainButton x="10" y="200" width="200" height="80" textureID="MAIN_BTN" callback="cbChangeToStartMenuState"/>
 
-    <Player x="10" y="200" width="101" height="43" lives="4" textureID="HELICOPTER" friction="0.9" acceleration="3.5"
+    <Entrance x="10" y="200" width="200" height="80" textureID="MAIN_BTN" callback="cbChangeToStartMenuState"/>
+    <Player id="-1" x="10" y="200" width="101" height="43" lives="4" textureID="HELICOPTER" friction="0.9" acceleration="12.0"
             waitFireTime="200"/>
 
     <PlayerBullet textureID="BULLET_ONE" x="0" y="0" width="11" height="11" damage="2" speed="24"/>
     <EnemyBullet textureID="BULLET_TWO" x="0" y="0" width="16" height="16" damage="2"/>
 
-    <Level />
+	<Level path="assets\levels.xml" />
 
 </GameObjects>
 
 <Textures>
-    <Global folder="/home/wenfeng/Desktop/LPFCQDJB31/Date">
+    <Global folder="D:\software\LPFCQDJB31\LPFCQDJB31\Date">
         <PackedImages id="FLOOR" binaryPath="Floor.dat" offsetsPath="Floor.mxx" />
         <PackedImages id="GAME" binaryPath="Game.dat" offsetsPath="Game.mxx" />
-        <PackedImages id="FJ_1" binaryPath="Fj/1.dat" offsetsPath="Fj/1.mxx" />
-        <PackedImages id="FJ_2" binaryPath="Fj/2.dat" offsetsPath="Fj/2.mxx" />
-        <PackedImages id="FJ_3" binaryPath="Fj/3.dat" offsetsPath="Fj/3.mxx" />
-        <PackedImages id="FJ_4" binaryPath="Fj/4.dat" offsetsPath="Fj/4.mxx" />
-        <Texture id="BTN_SYSTEM_1" path="Button/Bt11.dat" />
-        <Texture id="BTN_SYSTEM_2" path="Button/Bt12.dat" />
-        <Texture id="BTN_PROPERTY_1" path="Button/Bt21.dat" />
-        <Texture id="BTN_PROPERTY_2" path="Button/Bt21.dat" />
-        <Texture id="BTN_ITEM_1" path="Button/Bt31.dat" />
-        <Texture id="BTN_ITEM_2" path="Button/Bt31.dat" />
+        <PackedImages id="FJ_1" binaryPath="Fj\1.dat" offsetsPath="Fj\1.mxx" />
+        <PackedImages id="FJ_2" binaryPath="Fj\2.dat" offsetsPath="Fj\2.mxx" />
+        <PackedImages id="FJ_3" binaryPath="Fj\3.dat" offsetsPath="Fj\3.mxx" />
+        <PackedImages id="FJ_4" binaryPath="Fj\4.dat" offsetsPath="Fj\4.mxx" />
+        <Texture id="BTN_SYSTEM_1" path="Button\Bt11.dat" />
+        <Texture id="BTN_SYSTEM_2" path="Button\Bt12.dat" />
+        <Texture id="BTN_PROPERTY_1" path="Button\Bt21.dat" />
+        <Texture id="BTN_PROPERTY_2" path="Button\Bt21.dat" />
+        <Texture id="BTN_ITEM_1" path="Button\Bt31.dat" />
+        <Texture id="BTN_ITEM_2" path="Button\Bt31.dat" />
 
         <!-- numbers -->
-        <Texture id="NUMBER_0" path="Number/0.bmp" />
-        <Texture id="NUMBER_1" path="Number/1.bmp" />
-        <Texture id="NUMBER_2" path="Number/2.bmp" />
-        <Texture id="NUMBER_3" path="Number/3.bmp" />
-        <Texture id="NUMBER_4" path="Number/4.bmp" />
-        <Texture id="NUMBER_5" path="Number/5.bmp" />
-        <Texture id="NUMBER_6" path="Number/6.bmp" />
-        <Texture id="NUMBER_7" path="Number/7.bmp" />
-        <Texture id="NUMBER_8" path="Number/8.bmp" />
-        <Texture id="NUMBER_9" path="Number/9.bmp" />
-        <Texture id="NUMBER_10" path="Number/10.bmp" />
+        <Texture id="NUMBER_0" path="Number\0.bmp" />
+        <Texture id="NUMBER_1" path="Number\1.bmp" />
+        <Texture id="NUMBER_2" path="Number\2.bmp" />
+        <Texture id="NUMBER_3" path="Number\3.bmp" />
+        <Texture id="NUMBER_4" path="Number\4.bmp" />
+        <Texture id="NUMBER_5" path="Number\5.bmp" />
+        <Texture id="NUMBER_6" path="Number\6.bmp" />
+        <Texture id="NUMBER_7" path="Number\7.bmp" />
+        <Texture id="NUMBER_8" path="Number\8.bmp" />
+        <Texture id="NUMBER_9" path="Number\9.bmp" />
+        <Texture id="NUMBER_10" path="Number\10.bmp" />
 
         <!-- RPG -->
-        <PackedImages id="RPG_0" binaryPath="Rpg/26.Dat" offsetsPath="Rpg/26.Mxx"/>
+        <PackedImages id="RPG_0" binaryPath="Rpg\26.Dat" offsetsPath="Rpg\26.Mxx"/>
 
     </Global>
 

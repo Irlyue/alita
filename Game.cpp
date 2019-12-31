@@ -64,13 +64,25 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     }
     SDL_SetWindowIcon(m_pWindow, IMG_Load(m_pTextureManager->getTexturePath("ICON").c_str()));
 
+	m_pMapManager = new MapManager;
+	if(!m_pMapManager->init("assets\\maps.xml")){
+		printf("MapManager failed to initialize\n");
+		return false;
+	}
+
+	m_pEventManager = EventManager::getInstance();
+
+	EventListenerDelegate levelMoveDelegate = fastdelegate::MakeDelegate(this, &Game::onLevelMove);
+	m_pEventManager->addListerner(levelMoveDelegate, ObjectMoveEventData::s_eventType);
+
     m_pGameObjectFactory = GameObjectFactory::getInstance();
-    m_pGameObjectFactory->init(m_pDoc);
+    m_pGameObjectFactory->init(m_pDoc->FirstChildElement("GameObjects"));
     m_pGameObjectFactory->add("StartMenuButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuExitButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuPlayButton", MenuButton::creator);
     m_pGameObjectFactory->add(Player::s_type, Player::creator);
     m_pGameObjectFactory->add(Level::s_type, Level::creator);
+	m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
 
     m_pGameStateMachine = new GameStateMachine;
     m_pGameStateMachine->init(m_pDoc->FirstChildElement("GameStates"));
@@ -81,6 +93,13 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
 
     m_running = true;
     return true;
+}
+
+void Game::onLevelMove(IEventDataPtr pEvent) {
+	auto p = std::static_pointer_cast<ObjectMoveEventData>(pEvent);
+	if (p->GetID() == LEVEL_ID) {
+		m_levelPos = p->getPos();
+	}
 }
 
 bool Game::isRunning() const{
@@ -99,6 +118,7 @@ void Game::render(){
 
 void Game::update(){
     m_pGameStateMachine->update();
+	m_pEventManager->update();
 }
 
 void Game::handleEvents(){
