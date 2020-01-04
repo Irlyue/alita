@@ -6,15 +6,18 @@
 #include <string>
 #include <vector>
 
+
 struct GameMapGrid{
     int floorID = -1;
     int tileID = -1;
-    std::string roleID;
-    std::string other;
+    std::string roleID = "";
+    std::string other = "";
 };
 
 class GameMap{
 public:
+	~GameMap(){destroy();}
+	void destroy();
     bool init(std::string path);
     int getRows() const {return m_rows;}
     int getCols() const {return m_cols;}
@@ -38,5 +41,7 @@ private:
     std::vector<GameMapGrid> m_maps;
 };
 
+
+using GameMapPtr = std::shared_ptr<GameMap>;
 
 #endif

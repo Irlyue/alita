@@ -3,36 +3,41 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 #include "GameState.h"
 #include "MenuState.h"
 #include "PlayState.h"
 #include "PauseState.h"
 
+using GameStatePtr = std::shared_ptr<GameState>;
+
 class GameStateMachine{
 public:
+	~GameStateMachine(){destroy();}
+
     void update();
 
     void render();
 
     bool init(XMLElement *pDoc);
 
-    GameState *currentState();
+	GameStatePtr currentState();
 
-    void pushState(GameState *pGameState);
+    void pushState(GameStatePtr pGameState);
 
-    void changeState(GameState *pGameState);
+    void changeState(GameStatePtr pGameState);
 
     void popState();
 
     void destroy();
 
-    GameState* create(const GameStateType &gameStateType);
+	GameStatePtr create(const GameStateType &gameStateType);
 
     void add(const ObjectType &objType, GameStateCreator creator);
 
 private:
 
-    std::vector<GameState*> m_gameStates;
+    std::vector<GameStatePtr> m_gameStates;
 
     XMLElement *m_pGameStateInfos = nullptr;
 

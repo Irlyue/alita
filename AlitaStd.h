@@ -6,12 +6,19 @@
 #include "tinyxml2.h"
 
 using GameObjectID = int;
+using AnimationID = std::string;
 using GameMapID = std::string;
 using TextureID = std::string;
 using ObjectType = std::string;
 using EventType = unsigned long long;
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
+
+#if defined DEBUG
+static int counter = 0;
+#define GCC_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif
+
 
 #define SAFE_STRING(x) (x ? x : "")
 

@@ -11,6 +11,7 @@ using GameObjectMap = std::map<GameObjectID, GameObject*>;
 
 class GameState{
 public:
+	virtual ~GameState(){}
     virtual bool init(XMLElement *doc);
 
     virtual void update();

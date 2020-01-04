@@ -88,3 +88,7 @@ std::ostream &operator<<(std::ostream &os, GameMap &gm){
 
 	return os;
 }
+
+void GameMap::destroy(){
+	printf("GameMap %s destroyed!\n", m_name.c_str());
+}

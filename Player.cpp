@@ -7,7 +7,7 @@ const ObjectType Player::s_type = "Player";
 
 
 GameObject *Player::creator(){
-    return new Player;
+    return GCC_NEW Player;
 }
 
 bool Player::init(const XMLElement *doc){
@@ -16,13 +16,16 @@ bool Player::init(const XMLElement *doc){
     m_playerLives = doc->IntAttribute("lives");
     m_acc = doc->FloatAttribute("acceleration");
     m_friction = doc->FloatAttribute("friction");
-    m_waitFireTime = doc->Unsigned64Attribute("waitFireTime");
 
-    m_pos = {100, 100};
+    m_pos = {10 * 48, 10 * 32};
     m_currentFrame = 0;
 
-    m_pPlayerAnimation = new PlayerSpriteAnimation;
-    m_pPlayerAnimation->init("");
+    m_pAnimation = g_alita->getAnimationPlayerFactory()->create("RPG_1");
+	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+
+	EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &Player::onMapCreated);
+	g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
+
     return true;
 
 }
@@ -62,60 +65,64 @@ void Player::update(){
     GameObject::update();
     auto pInputHandler = InputHandler::getInstance();
 
-    m_acceleration.setX(0);
-    m_acceleration.setY(0);
+	Vector2D runVelocity(1, 1);
+	Vector2D walkVelocity(1, 1);
 
-    int motion = MOTION_STILL;
-    if(pInputHandler->isKeyDown(SDL_SCANCODE_W)){
-        m_acceleration.setY(-m_acc);
-    }else if(pInputHandler->isKeyDown(SDL_SCANCODE_S)){
-        m_acceleration.setY(m_acc);
-    }
+	if(m_pAnimation->getMotion() == MOTION_STILL || m_pAnimation->isFinished()){
 
-    if(pInputHandler->isKeyDown(SDL_SCANCODE_A)){
-        m_acceleration.setX(-m_acc);
-    }else if(pInputHandler->isKeyDown(SDL_SCANCODE_D)){
-        m_acceleration.setX(m_acc);
-    }
+		int motion = MOTION_STILL;
+		m_acceleration.setX(0.);
+		m_acceleration.setY(0.);
 
-    int orientation = calcOrientation(m_acceleration);
-    if(!m_acceleration.isZero()){
-        motion = MOTION_RUN;
-    }
+		// MOTION_RUN
+		if (pInputHandler->isKeyDown(SDL_SCANCODE_W)) {
+			motion = MOTION_RUN;
+			m_acceleration.setY(-runVelocity.getY());
+		}else if (pInputHandler->isKeyDown(SDL_SCANCODE_S)) {
+			motion = MOTION_RUN;
+			m_acceleration.setY(runVelocity.getY());
+		}
 
-    if(pInputHandler->getBtnState(SDL_BUTTON_RIGHT)){
-        orientation = calcSector(pInputHandler->getMousePos() - m_pos);
-        motion = MOTION_MAGIC_ATTACK;
-    }else if(pInputHandler->getBtnState(SDL_BUTTON_LEFT)){
-        orientation = calcSector(pInputHandler->getMousePos() - m_pos);
-        motion = MOTION_DIRECT_ATTACK;
-    }
+		if (pInputHandler->isKeyDown(SDL_SCANCODE_A)) {
+			motion = MOTION_RUN;
+			m_acceleration.setX(-runVelocity.getX());
+		}else if (pInputHandler->isKeyDown(SDL_SCANCODE_D)) {
+			motion = MOTION_RUN;
+			m_acceleration.setX(runVelocity.getX());
+		}
+		int orientation = calcOrientation(m_acceleration);
 
-    //m_acceleration.normalize();
-    //m_acceleration *= m_acc;
+		if (pInputHandler->getBtnState(SDL_BUTTON_RIGHT)) {
+			orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
+			motion = MOTION_MAGIC_ATTACK;
+		}else if (pInputHandler->getBtnState(SDL_BUTTON_LEFT)) {
+			orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
+			motion = MOTION_DIRECT_ATTACK;
+		}
 
-    m_velocity *= m_friction;
-    m_velocity +=  m_acceleration;
-    m_pos += m_acceleration;
-    m_pPlayerAnimation->onMotionChanged(m_pos, motion, orientation);
+		if(orientation != -1){
+			m_pAnimation->VSwitchOrientation(orientation);
+		}
 
-	if(!m_acceleration.isZero()){
-		auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
-		g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+		if(motion != MOTION_STILL || m_pAnimation->isFinished()){
+			m_pAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
+		}else{
+			m_pos = m_pAnimation->VUpdate();
+		}
+
+	}else{
+		m_pos = m_pAnimation->VUpdate();
 	}
 
-    m_currentFrame = (m_frame / 4) % m_nbSprites;
-}
-
-bool Player::isFireTimeIrlegal() const {
-    return SDL_GetTicks() - m_lastFireTime > m_waitFireTime;
+	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
+	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
 }
 
 void Player::draw(){
     // Vector2D wh = g_alita->getTextureManager()->getTextureSize("RPG_0", m_spriteOffset + m_currentFrame);
     // g_alita->getTextureManager()->drawTile("RPG_0", m_spriteOffset + m_currentFrame,
     //                                        m_pos.getX(), m_pos.getY(), -1, -1, g_alita->getRenderer());
-    // m_pPlayerAnimation->VDraw();
+    m_pAnimation->VDraw();
 
 	auto &levelPos = g_alita->getLevelPos();
     SDL_Rect rect = {m_pos.getX() - levelPos.getX(), m_pos.getY() - levelPos.getY(), 5, 5};
@@ -123,3 +130,12 @@ void Player::draw(){
     SDL_RenderFillRect(g_alita->getRenderer(), &rect);
 }
 
+void Player::onMapCreated(IEventDataPtr pEvent){
+	auto p = std::static_pointer_cast<MapCreatedEventData>(pEvent);
+	// switch to new position
+	m_pos = p->getInitPos();
+	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+
+	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(PLAYER_ID, m_pos);
+	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+}

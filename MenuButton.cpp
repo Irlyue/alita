@@ -7,7 +7,7 @@ extern std::map<std::string, CallBackFunc> g_cbFuncMaps;
 const ObjectType MenuButton::s_type = "MenuButton";
 
 GameObject *MenuButton::creator(){
-    return new MenuButton;
+    return GCC_NEW MenuButton;
 }
 
 const ObjectType &MenuButton::getObjectType() const {

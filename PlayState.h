@@ -21,7 +21,9 @@ public:
 
 private:
 
-	GameMap *m_pgm = nullptr;
+	int m_frame = 0;
+
+	GameMapPtr m_pgm;
 
 	void renderTileLayer();
 

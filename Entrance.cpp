@@ -4,7 +4,7 @@
 const ObjectType Entrance::s_type = "Entrance";
 
 GameObject *Entrance::creator(){
-	return new Entrance;
+	return GCC_NEW Entrance;
 }
 
 bool Entrance::init(const XMLElement *doc){
@@ -50,8 +50,8 @@ bool Entrance::isPlayerInsideEntrance(const Vector2D &playerPos){
 	bool switchMap = false;
 	for (auto &grid : m_areas) {
 		Vector2D xy = playerPos - grid;
-		int x = xy.getX();
-		int y = xy.getY();
+		int x = static_cast<int>(xy.getX());
+		int y = static_cast<int>(xy.getY());
 		if (0 <= x && x < tileWidth && 0 <= y && y < tileHeight) {
 			switchMap = true;
 			break;

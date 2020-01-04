@@ -3,7 +3,9 @@
     <StartMenuState>
     </StartMenuState>
 
-    <PlayState mapID="0101"/>
+	<PlayState mapID="0201">
+		<Legend/>
+	</PlayState>
 
     <PauseState>
         <MenuResumeButton/>
@@ -21,55 +23,209 @@
     <Entrance x="10" y="200" width="200" height="80" textureID="MAIN_BTN" callback="cbChangeToStartMenuState"/>
     <Player id="-1" x="10" y="200" width="101" height="43" lives="4" textureID="HELICOPTER" friction="0.9" acceleration="12.0"
             waitFireTime="200"/>
-    <NPCharacter />
+    <NPCharacters>
+		<NPCharacter code="N？？？"/>
+		<NPCharacter code="N布店老板"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N传送古树"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N次元箱"/>
+		<NPCharacter code="N村长"/>
+		<NPCharacter code="N村大夫"/>
+		<NPCharacter code="N村民"/>
+		<NPCharacter code="N村民"/>
+		<NPCharacter code="N村民1"/>
+		<NPCharacter code="N村民1"/>
+		<NPCharacter code="N村民2"/>
+		<NPCharacter code="N村民2"/>
+		<NPCharacter code="N村民3"/>
+		<NPCharacter code="N当铺伙计"/>
+		<NPCharacter code="N店小二"/>
+		<NPCharacter code="N鬼老"/>
+		<NPCharacter code="N和尚"/>
+		<NPCharacter code="N回收员"/>
+		<NPCharacter code="N极域使者"/>
+		<NPCharacter code="N监狱看守"/>
+		<NPCharacter code="N酒店老板"/>
+		<NPCharacter code="N酒店侍女"/>
+		<NPCharacter code="N看守1"/>
+		<NPCharacter code="N看守2"/>
+		<NPCharacter code="N看守3"/>
+		<NPCharacter code="N看守4"/>
+		<NPCharacter code="N看守5"/>
+		<NPCharacter code="N看守6"/>
+		<NPCharacter code="N看守7"/>
+		<NPCharacter code="N看守8"/>
+		<NPCharacter code="N老村长"/>
+		<NPCharacter code="N老刘头"/>
+		<NPCharacter code="N老人"/>
+		<NPCharacter code="N李裁缝"/>
+		<NPCharacter code="N李氏"/>
+		<NPCharacter code="N李秀才"/>
+		<NPCharacter code="N刘伯"/>
+		<NPCharacter code="N刘二虎"/>
+		<NPCharacter code="N刘二虎妻"/>
+		<NPCharacter code="N刘寡妇"/>
+		<NPCharacter code="N刘靖"/>
+		<NPCharacter code="N鲁巴"/>
+		<NPCharacter code="N墓神"/>
+		<NPCharacter code="N农家"/>
+		<NPCharacter code="N女孩"/>
+		<NPCharacter code="N齐扬布店"/>
+		<NPCharacter code="N齐扬怪医"/>
+		<NPCharacter code="N齐扬铁匠"/>
+		<NPCharacter code="N莎亚"/>
+		<NPCharacter code="N山谷村长"/>
+		<NPCharacter code="N商人"/>
+		<NPCharacter code="N神秘老人"/>
+		<NPCharacter code="N神秘老人"/>
+		<NPCharacter code="N神秘老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N试炼老人"/>
+		<NPCharacter code="N收栗人"/>
+		<NPCharacter code="N收栗人妻"/>
+		<NPCharacter code="N孙大夫"/>
+		<NPCharacter code="N孙有财"/>
+		<NPCharacter code="N铁匠"/>
+		<NPCharacter code="N铁匠"/>
+		<NPCharacter code="N铁匠"/>
+		<NPCharacter code="N王裁缝"/>
+		<NPCharacter code="N王二"/>
+		<NPCharacter code="N王铁匠"/>
+		<NPCharacter code="N钨姆"/>
+		<NPCharacter code="N钨帕"/>
+		<NPCharacter code="N无极道人"/>
+		<NPCharacter code="N无双使者"/>
+		<NPCharacter code="N吴乾"/>
+		<NPCharacter code="N吴乾"/>
+		<NPCharacter code="N小贩"/>
+		<NPCharacter code="N新月村长"/>
+		<NPCharacter code="N新月大夫"/>
+		<NPCharacter code="N新月铁匠"/>
+		<NPCharacter code="N绣蓝"/>
+		<NPCharacter code="N伊佳"/>
+		<NPCharacter code="N伊哇"/>
+		<NPCharacter code="N引路人"/>
+		<NPCharacter code="N尤伊"/>
+		<NPCharacter code="N渔夫"/>
+		<NPCharacter code="N渔夫"/>
+		<NPCharacter code="N杂货商"/>
+		<NPCharacter code="N扎克族长"/>
+		<NPCharacter code="N张宝"/>
+		<NPCharacter code="N张宝"/>
+		<NPCharacter code="N张宝"/>
+		<NPCharacter code="N张裁缝"/>
+		<NPCharacter code="N张三"/>
+		<NPCharacter code="N镇安村长"/>
+    </NPCharacters>
 
     <PlayerBullet textureID="BULLET_ONE" x="0" y="0" width="11" height="11" damage="2" speed="24"/>
     <EnemyBullet textureID="BULLET_TWO" x="0" y="0" width="16" height="16" damage="2"/>
 
+	<Legend x="0" y="0" height="10" width="40"/>
+
 </GameObjects>
 
-<Textures>
-    <Global folder="/home/wenfeng/Desktop/LPFCQDJB31/Date">
-        <PackedImages id="FLOOR" binaryPath="Floor.dat" offsetsPath="Floor.mxx" />
-        <PackedImages id="GAME" binaryPath="Game.dat" offsetsPath="Game.mxx" />
-        <PackedImages id="FJ_1" binaryPath="Fj\1.dat" offsetsPath="Fj\1.mxx" />
-        <PackedImages id="FJ_2" binaryPath="Fj\2.dat" offsetsPath="Fj\2.mxx" />
-        <PackedImages id="FJ_3" binaryPath="Fj\3.dat" offsetsPath="Fj\3.mxx" />
-        <PackedImages id="FJ_4" binaryPath="Fj\4.dat" offsetsPath="Fj\4.mxx" />
-        <Texture id="BTN_SYSTEM_1" path="Button\Bt11.dat" />
-        <Texture id="BTN_SYSTEM_2" path="Button\Bt12.dat" />
-        <Texture id="BTN_PROPERTY_1" path="Button\Bt21.dat" />
-        <Texture id="BTN_PROPERTY_2" path="Button\Bt21.dat" />
-        <Texture id="BTN_ITEM_1" path="Button\Bt31.dat" />
-        <Texture id="BTN_ITEM_2" path="Button\Bt31.dat" />
+<Textures folder="D:/software/LPFCQDJB31/LPFCQDJB31/Date" >
+	<PackedImages id="FLOOR" binaryPath="Floor.dat" offsetsPath="Floor.mxx" />
+	<PackedImages id="GAME" binaryPath="Game.dat" offsetsPath="Game.mxx" />
+	<PackedImages id="FJ_1" binaryPath="Fj\1.dat" offsetsPath="Fj\1.mxx" />
+	<PackedImages id="FJ_2" binaryPath="Fj\2.dat" offsetsPath="Fj\2.mxx" />
+	<PackedImages id="FJ_3" binaryPath="Fj\3.dat" offsetsPath="Fj\3.mxx" />
+	<PackedImages id="FJ_4" binaryPath="Fj\4.dat" offsetsPath="Fj\4.mxx" />
+	<Texture id="BTN_SYSTEM_1" path="Button\Bt11.dat" />
+	<Texture id="BTN_SYSTEM_2" path="Button\Bt12.dat" />
+	<Texture id="BTN_PROPERTY_1" path="Button\Bt21.dat" />
+	<Texture id="BTN_PROPERTY_2" path="Button\Bt21.dat" />
+	<Texture id="BTN_ITEM_1" path="Button\Bt31.dat" />
+	<Texture id="BTN_ITEM_2" path="Button\Bt31.dat" />
 
-        <!-- numbers -->
-        <Texture id="NUMBER_0" path="Number\0.bmp" />
-        <Texture id="NUMBER_1" path="Number\1.bmp" />
-        <Texture id="NUMBER_2" path="Number\2.bmp" />
-        <Texture id="NUMBER_3" path="Number\3.bmp" />
-        <Texture id="NUMBER_4" path="Number\4.bmp" />
-        <Texture id="NUMBER_5" path="Number\5.bmp" />
-        <Texture id="NUMBER_6" path="Number\6.bmp" />
-        <Texture id="NUMBER_7" path="Number\7.bmp" />
-        <Texture id="NUMBER_8" path="Number\8.bmp" />
-        <Texture id="NUMBER_9" path="Number\9.bmp" />
-        <Texture id="NUMBER_10" path="Number\10.bmp" />
+	<!-- numbers -->
+	<Texture id="NUMBER_0" path="Number\0.bmp" />
+	<Texture id="NUMBER_1" path="Number\1.bmp" />
+	<Texture id="NUMBER_2" path="Number\2.bmp" />
+	<Texture id="NUMBER_3" path="Number\3.bmp" />
+	<Texture id="NUMBER_4" path="Number\4.bmp" />
+	<Texture id="NUMBER_5" path="Number\5.bmp" />
+	<Texture id="NUMBER_6" path="Number\6.bmp" />
+	<Texture id="NUMBER_7" path="Number\7.bmp" />
+	<Texture id="NUMBER_8" path="Number\8.bmp" />
+	<Texture id="NUMBER_9" path="Number\9.bmp" />
+	<Texture id="NUMBER_10" path="Number\10.bmp" />
 
-        <!-- RPG -->
-        <PackedImages id="RPG_0" binaryPath="Rpg\26.Dat" offsetsPath="Rpg\26.Mxx"/>
+	<!-- RPG -->
+	<PackedImages id="RPG_1" binaryPath="Rpg\1.Dat" offsetsPath="Rpg\1.Mxx"/>
 
-        <!-- NPC -->
-        <PackedImages id="NPC_01" binaryPath="Npc\1.Dat" offsetsPath="Npc\1.Mxx"/>
-        <PackedImages id="NPC_02" binaryPath="Npc\2.Dat" offsetsPath="Npc\2.Mxx"/>
-        <PackedImages id="NPC_03" binaryPath="Npc\3.Dat" offsetsPath="Npc\3.Mxx"/>
-        <PackedImages id="NPC_04" binaryPath="Npc\4.Dat" offsetsPath="Npc\4.Mxx"/>
-        <PackedImages id="NPC_05" binaryPath="Npc\5.Dat" offsetsPath="Npc\5.Mxx"/>
-        <PackedImages id="NPC_08" binaryPath="Npc\8.Dat" offsetsPath="Npc\8.Mxx"/>
-        <PackedImages id="NPC_10" binaryPath="Npc\10.Dat" offsetsPath="Npc\10.Mxx"/>
-        <PackedImages id="NPC_52" binaryPath="Npc\52.Dat" offsetsPath="Npc\52.Mxx"/>
-        <PackedImages id="NPC_53" binaryPath="Npc\53.Dat" offsetsPath="Npc\53.Mxx"/>
-
-    </Global>
-
+	<!-- NPC -->
+	<PackedImages id="NPC_001" binaryPath="Npc\1.Dat" offsetsPath="Npc\1.Mxx" />
+	<PackedImages id="NPC_002" binaryPath="Npc\2.Dat" offsetsPath="Npc\2.Mxx" />
+	<PackedImages id="NPC_003" binaryPath="Npc\3.Dat" offsetsPath="Npc\3.Mxx" />
+	<PackedImages id="NPC_004" binaryPath="Npc\4.Dat" offsetsPath="Npc\4.Mxx" />
+	<PackedImages id="NPC_005" binaryPath="Npc\5.Dat" offsetsPath="Npc\5.Mxx" />
+	<PackedImages id="NPC_006" binaryPath="Npc\6.Dat" offsetsPath="Npc\6.Mxx" />
+	<PackedImages id="NPC_007" binaryPath="Npc\7.Dat" offsetsPath="Npc\7.Mxx" />
+	<PackedImages id="NPC_008" binaryPath="Npc\8.Dat" offsetsPath="Npc\8.Mxx" />
+	<PackedImages id="NPC_009" binaryPath="Npc\9.Dat" offsetsPath="Npc\9.Mxx" />
+	<PackedImages id="NPC_010" binaryPath="Npc\10.Dat" offsetsPath="Npc\10.Mxx" />
+	<PackedImages id="NPC_011" binaryPath="Npc\11.Dat" offsetsPath="Npc\11.Mxx" />
+	<PackedImages id="NPC_012" binaryPath="Npc\12.Dat" offsetsPath="Npc\12.Mxx" />
+	<PackedImages id="NPC_013" binaryPath="Npc\13.Dat" offsetsPath="Npc\13.Mxx" />
+	<PackedImages id="NPC_014" binaryPath="Npc\14.Dat" offsetsPath="Npc\14.Mxx" />
+	<PackedImages id="NPC_015" binaryPath="Npc\15.Dat" offsetsPath="Npc\15.Mxx" />
+	<PackedImages id="NPC_016" binaryPath="Npc\16.Dat" offsetsPath="Npc\16.Mxx" />
+	<PackedImages id="NPC_017" binaryPath="Npc\17.Dat" offsetsPath="Npc\17.Mxx" />
+	<PackedImages id="NPC_018" binaryPath="Npc\18.Dat" offsetsPath="Npc\18.Mxx" />
+	<PackedImages id="NPC_019" binaryPath="Npc\19.Dat" offsetsPath="Npc\19.Mxx" />
+	<PackedImages id="NPC_020" binaryPath="Npc\20.Dat" offsetsPath="Npc\20.Mxx" />
+	<PackedImages id="NPC_021" binaryPath="Npc\21.Dat" offsetsPath="Npc\21.Mxx" />
+	<PackedImages id="NPC_022" binaryPath="Npc\22.Dat" offsetsPath="Npc\22.Mxx" />
+	<PackedImages id="NPC_023" binaryPath="Npc\23.Dat" offsetsPath="Npc\23.Mxx" />
+	<PackedImages id="NPC_024" binaryPath="Npc\24.Dat" offsetsPath="Npc\24.Mxx" />
+	<PackedImages id="NPC_025" binaryPath="Npc\25.Dat" offsetsPath="Npc\25.Mxx" />
+	<PackedImages id="NPC_026" binaryPath="Npc\26.Dat" offsetsPath="Npc\26.Mxx" />
+	<PackedImages id="NPC_027" binaryPath="Npc\27.Dat" offsetsPath="Npc\27.Mxx" />
+	<PackedImages id="NPC_028" binaryPath="Npc\28.Dat" offsetsPath="Npc\28.Mxx" />
+	<PackedImages id="NPC_029" binaryPath="Npc\29.Dat" offsetsPath="Npc\29.Mxx" />
+	<PackedImages id="NPC_030" binaryPath="Npc\30.Dat" offsetsPath="Npc\30.Mxx" />
+	<PackedImages id="NPC_031" binaryPath="Npc\31.Dat" offsetsPath="Npc\31.Mxx" />
+	<PackedImages id="NPC_032" binaryPath="Npc\32.Dat" offsetsPath="Npc\32.Mxx" />
+	<PackedImages id="NPC_033" binaryPath="Npc\33.Dat" offsetsPath="Npc\33.Mxx" />
+	<PackedImages id="NPC_034" binaryPath="Npc\34.Dat" offsetsPath="Npc\34.Mxx" />
+	<PackedImages id="NPC_035" binaryPath="Npc\35.Dat" offsetsPath="Npc\35.Mxx" />
+	<PackedImages id="NPC_036" binaryPath="Npc\36.Dat" offsetsPath="Npc\36.Mxx" />
+	<PackedImages id="NPC_037" binaryPath="Npc\37.Dat" offsetsPath="Npc\37.Mxx" />
+	<PackedImages id="NPC_038" binaryPath="Npc\38.Dat" offsetsPath="Npc\38.Mxx" />
+	<PackedImages id="NPC_039" binaryPath="Npc\39.Dat" offsetsPath="Npc\39.Mxx" />
+	<PackedImages id="NPC_040" binaryPath="Npc\40.Dat" offsetsPath="Npc\40.Mxx" />
+	<PackedImages id="NPC_041" binaryPath="Npc\41.Dat" offsetsPath="Npc\41.Mxx" />
+	<PackedImages id="NPC_042" binaryPath="Npc\42.Dat" offsetsPath="Npc\42.Mxx" />
+	<PackedImages id="NPC_043" binaryPath="Npc\43.Dat" offsetsPath="Npc\43.Mxx" />
+	<PackedImages id="NPC_044" binaryPath="Npc\44.Dat" offsetsPath="Npc\44.Mxx" />
+	<PackedImages id="NPC_045" binaryPath="Npc\45.Dat" offsetsPath="Npc\45.Mxx" />
+	<PackedImages id="NPC_046" binaryPath="Npc\46.Dat" offsetsPath="Npc\46.Mxx" />
+	<PackedImages id="NPC_047" binaryPath="Npc\47.Dat" offsetsPath="Npc\47.Mxx" />
+	<PackedImages id="NPC_048" binaryPath="Npc\48.Dat" offsetsPath="Npc\48.Mxx" />
+	<PackedImages id="NPC_049" binaryPath="Npc\49.Dat" offsetsPath="Npc\49.Mxx" />
+	<PackedImages id="NPC_050" binaryPath="Npc\50.Dat" offsetsPath="Npc\50.Mxx" />
+	<PackedImages id="NPC_051" binaryPath="Npc\51.Dat" offsetsPath="Npc\51.Mxx" />
+	<PackedImages id="NPC_052" binaryPath="Npc\52.Dat" offsetsPath="Npc\52.Mxx" />
+	<PackedImages id="NPC_053" binaryPath="Npc\53.Dat" offsetsPath="Npc\53.Mxx" />
 </Textures>

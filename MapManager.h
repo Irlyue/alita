@@ -4,12 +4,14 @@
 #include "AlitaStd.h"
 #include "GameMap.h"
 #include <map>
+#include <memory>
+
 
 class MapManager{
 public:
 	~MapManager(){destroy();}
 	bool init(std::string path);
-	GameMap *create(GameMapID gid);
+	GameMapPtr create(GameMapID gid);
 
 	void destroy();
 

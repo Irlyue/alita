@@ -1,4 +1,59 @@
 <?xml version="1.0" ?>
-<Animations>
-    <Monster />
+<Animations folder="D:\software\LPFCQDJB31\LPFCQDJB31\Date\">
+    <RPG aid="RPG_1" soPath="Rpg\1.Zb"/>
+
+	<NPC aid="NPC_000" soPath="Npc\0.Zb" />
+	<NPC aid="NPC_001" soPath="Npc\1.Zb" />
+	<NPC aid="NPC_002" soPath="Npc\2.Zb" />
+	<NPC aid="NPC_003" soPath="Npc\3.Zb" />
+	<NPC aid="NPC_004" soPath="Npc\4.Zb" />
+	<NPC aid="NPC_005" soPath="Npc\5.Zb" />
+	<NPC aid="NPC_006" soPath="Npc\6.Zb" />
+	<NPC aid="NPC_007" soPath="Npc\7.Zb" />
+	<NPC aid="NPC_008" soPath="Npc\8.Zb" />
+	<NPC aid="NPC_009" soPath="Npc\9.Zb" />
+	<NPC aid="NPC_010" soPath="Npc\10.Zb" />
+	<NPC aid="NPC_011" soPath="Npc\11.Zb" />
+	<NPC aid="NPC_012" soPath="Npc\12.Zb" />
+	<NPC aid="NPC_013" soPath="Npc\13.Zb" />
+	<NPC aid="NPC_014" soPath="Npc\14.Zb" />
+	<NPC aid="NPC_015" soPath="Npc\15.Zb" />
+	<NPC aid="NPC_016" soPath="Npc\16.Zb" />
+	<NPC aid="NPC_017" soPath="Npc\17.Zb" />
+	<NPC aid="NPC_018" soPath="Npc\18.Zb" />
+	<NPC aid="NPC_019" soPath="Npc\19.Zb" />
+	<NPC aid="NPC_020" soPath="Npc\20.Zb" />
+	<NPC aid="NPC_021" soPath="Npc\21.Zb" />
+	<NPC aid="NPC_022" soPath="Npc\22.Zb" />
+	<NPC aid="NPC_023" soPath="Npc\23.Zb" />
+	<NPC aid="NPC_024" soPath="Npc\24.Zb" />
+	<NPC aid="NPC_025" soPath="Npc\25.Zb" />
+	<NPC aid="NPC_026" soPath="Npc\26.Zb" />
+	<NPC aid="NPC_027" soPath="Npc\27.Zb" />
+	<NPC aid="NPC_028" soPath="Npc\28.Zb" />
+	<NPC aid="NPC_029" soPath="Npc\29.Zb" />
+	<NPC aid="NPC_030" soPath="Npc\30.Zb" />
+	<NPC aid="NPC_031" soPath="Npc\31.Zb" />
+	<NPC aid="NPC_032" soPath="Npc\32.Zb" />
+	<NPC aid="NPC_033" soPath="Npc\33.Zb" />
+	<NPC aid="NPC_034" soPath="Npc\34.Zb" />
+	<NPC aid="NPC_035" soPath="Npc\35.Zb" />
+	<NPC aid="NPC_036" soPath="Npc\36.Zb" />
+	<NPC aid="NPC_037" soPath="Npc\37.Zb" />
+	<NPC aid="NPC_038" soPath="Npc\38.Zb" />
+	<NPC aid="NPC_039" soPath="Npc\39.Zb" />
+	<NPC aid="NPC_040" soPath="Npc\40.Zb" />
+	<NPC aid="NPC_041" soPath="Npc\41.Zb" />
+	<NPC aid="NPC_042" soPath="Npc\42.Zb" />
+	<NPC aid="NPC_043" soPath="Npc\43.Zb" />
+	<NPC aid="NPC_044" soPath="Npc\44.Zb" />
+	<NPC aid="NPC_045" soPath="Npc\45.Zb" />
+	<NPC aid="NPC_046" soPath="Npc\46.Zb" />
+	<NPC aid="NPC_047" soPath="Npc\47.Zb" />
+	<NPC aid="NPC_048" soPath="Npc\48.Zb" />
+	<NPC aid="NPC_049" soPath="Npc\49.Zb" />
+	<NPC aid="NPC_050" soPath="Npc\50.Zb" />
+	<NPC aid="NPC_051" soPath="Npc\51.Zb" />
+	<NPC aid="NPC_052" soPath="Npc\52.Zb" />
+	<NPC aid="NPC_053" soPath="Npc\53.Zb" />
 </Animations>

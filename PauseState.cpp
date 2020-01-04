@@ -11,5 +11,5 @@ const GameStateType &PauseState::getGameStateType(){
 }
 
 GameState *PauseState::creator(){
-    return new PauseState;
+    return GCC_NEW PauseState;
 }

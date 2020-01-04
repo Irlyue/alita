@@ -9,9 +9,14 @@
 #include "Bullet.h"
 #include "Entrance.h"
 #include "NPCharacter.h"
+#include "Legend.h"
 
 class GameObjectFactory{
 public:
+
+	~GameObjectFactory() {destroy();}
+
+	void destroy();
 
     bool init(XMLElement *doc);
 
@@ -21,11 +26,13 @@ public:
 
     static GameObjectFactory *getInstance();
 
+    std::map<ObjectType, XMLElement*> &getGameObjectInfos() {return m_gameObjectInfos;}
+
 private:
     static GameObjectFactory *s_pGameObjectFactory;
     std::map<ObjectType, GameObjectCreator> m_ObjectCreatorMaps;
 
-    XMLElement *m_pGameObjectInfos;
+    std::map<ObjectType, XMLElement*> m_gameObjectInfos;
 
 };
 

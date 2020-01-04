@@ -38,8 +38,9 @@ bool GameState::onEnter() {
 bool GameState::onExit() {
     printf("Exit %s...\n", getGameStateType().c_str());
     for(auto it: m_gameObjects){
-        it.second->destroy();
+        delete it.second;
     }
+
     m_gameObjects.clear();
     return true;
 };

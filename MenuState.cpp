@@ -8,7 +8,7 @@ const GameStateType &StartMenuState::getGameStateType() {
 }
 
 GameState *StartMenuState::creator(){
-    return new StartMenuState;
+    return GCC_NEW StartMenuState;
 }
 
 
@@ -26,5 +26,5 @@ void StartMenuState::render(){
     SDL_RenderClear(g_alita->getRenderer());
     int width = 400, height = 200;
     int x = (g_alita->getWindowWidth() - width)/2, y = (g_alita->getWindowHeight() - height)/2;
-    g_alita->getTextureManager()->drawTile("GAME", 0, x, y, width, height, g_alita->getRenderer());
+    g_alita->getTextureManager()->draw("GAME_0", x, y, width, height, g_alita->getRenderer());
 }

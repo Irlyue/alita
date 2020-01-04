@@ -4,7 +4,7 @@
 const ObjectType NPCharacter::s_type = "NPCharacter";
 
 GameObject *NPCharacter::creator(){
-    return new NPCharacter;
+    return GCC_NEW NPCharacter;
 }
 
 bool NPCharacter::init(const XMLElement *doc){
@@ -13,7 +13,11 @@ bool NPCharacter::init(const XMLElement *doc){
 }
 
 void NPCharacter::draw(){
-    Vector2D &levelPos = g_alita->getLevelPos();
-    g_alita->getTextureManager()->drawTile(m_textureID, 0, m_pos.getX() - levelPos.getX(), m_pos.getY() - levelPos.getY(),
-        -1, -1, g_alita->getRenderer());
+	m_pAnimation->VDraw();
+}
+
+void NPCharacter::update(){
+	GameObject::update();
+
+	m_pAnimation->VUpdate();
 }

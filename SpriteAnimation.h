@@ -2,6 +2,7 @@
 #define ALITA_SPRITE_ANIMATION_H
 
 #include <vector>
+#include <memory>
 #include "AlitaStd.h"
 #include "Vector2D.h"
 
@@ -15,11 +16,6 @@ enum Orientation{
     ORI_LEFT=6,
     ORI_UPPER_LEFT=7,
     ORI_TOTAL,
-};
-
-struct AnimationConfig{
-    int orientation;
-    int spriteStart;
 };
 
 enum Motion{
@@ -44,37 +40,58 @@ constexpr int NB_MOTION_SPRITES[] = {
 
 class SpriteAnimation{
 public:
-    virtual bool init(const std::string &path);
-    virtual void onMotionChanged(Vector2D pos, int motion, int orientation);
-    virtual void VDraw();
-    bool isMotionPreemptive(int motion) const;
-    void nextSprite();
-private:
-    std::vector<Vector2D> m_offsets;
-    std::vector<int> m_motionStack;
-    TextureID m_textureID;
-    Vector2D m_pos;
-    int m_currentFrame = 0;
-    int m_spriteOffset = 0;
-    int m_frame = 0;
-    int m_lastOrientation = 0;
+	virtual ~SpriteAnimation() {}
+	virtual void VDraw();
+	virtual void VSwitchOrientation(int ori) = 0;
+	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc) = 0;
+	virtual Vector2D VUpdate() = 0;
 
-    void changeOffset();
+	void setAnimationID(AnimationID aid) {m_aid = aid;}
+	void setOffsets(const std::vector<Vector2D> &offsets) {m_offsets = offsets;}
+	bool isFinished() const { return m_finished; }
+	int getMotion() const {return m_motion;}
+
+protected:
+	AnimationID m_aid;
+	Vector2D m_velocity;
+	Vector2D m_pos;
+	std::vector<Vector2D> m_offsets;
+
+	bool m_finished = true;
+	int m_motion = 0;
+	int m_orientation = 0;
+	int m_nbTotalFrames = 0;
+	int m_spriteIndex = 0;
+	int m_spriteOffset = 0;
+	int m_frame = 0;
+	int m_nbSprites = 1;
 };
+
+using SpriteAnimationPtr = std::shared_ptr<SpriteAnimation>;
 
 class PlayerSpriteAnimation: public SpriteAnimation{
-};
-
-class WeaponSpriteAnimation{
 public:
+
+	virtual void VDraw();
+	virtual void VSwitchOrientation(int ori);
+	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc);
+	virtual Vector2D VUpdate();
+	
+protected:
+	static const std::vector<Vector2D> VELOCITIES;
+	static const std::vector<int> SPRITE_FRAMES;
 };
 
-class MagicAttackSpriteAnimation{
-
-};
-
-class MonsterSpriteAnimation{
+class NPCSpriteAnimation: public SpriteAnimation{
 public:
+	virtual void VDraw();
+	virtual void VSwitchOrientation(int ori);
+	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc);
+	virtual Vector2D VUpdate();
+
+protected:
+	static const int NB_SPRITE_FRAMES;
 };
+
 
 #endif

@@ -3,89 +3,93 @@
 #include <cmath>
 #include <fstream>
 
-
-bool SpriteAnimation::init(const std::string &id){
-    m_textureID = "RPG_0";
-    m_motionStack.push_back(MOTION_STILL);
-
-    std::fstream fs;
-    fs.open("D:\\software\\LPFCQDJB31\\LPFCQDJB31\\Date\\Rpg\\26.Zb", std::fstream::in);
-
-    if(!fs){
-        printf("Error\n");
-        return false;
-    }
-
-    int x, y;
-    char c;
-    while(fs >> x >> c >> y >> c){
-        m_offsets.emplace_back(x, y);
-    }
-    return true;
-}
-
-void SpriteAnimation::onMotionChanged(Vector2D pos, int motion, int orientation){
-    m_pos = pos;
-    int lastMotion = m_motionStack.back();
-    // orientation changed
-    bool changed = false;
-    if(orientation != -1 && orientation != m_lastOrientation){
-        changed = true;
-        m_lastOrientation = orientation;
-    }
-
-    // motion changed
-    if(motion != lastMotion){
-        if(isMotionPreemptive(motion) || !isMotionPreemptive(lastMotion)){
-            changed = true;
-
-            m_motionStack.clear();
-            m_motionStack.push_back(MOTION_STILL);
-            m_motionStack.push_back(motion);
-        }
-    }
-
-    if(changed){
-        changeOffset();
-    }
-
-    nextSprite();
-}
-
-void SpriteAnimation::changeOffset(){
-    m_frame = 0;
-    m_spriteOffset = 0;
-    int lastMotion = m_motionStack.back();
-    for(int i = 0; i < lastMotion; i++){
-        m_spriteOffset += NB_MOTION_SPRITES[i] * 8;
-    }
-    m_spriteOffset += NB_MOTION_SPRITES[lastMotion] * m_lastOrientation;
-}
-
-void SpriteAnimation::nextSprite(){
-    m_currentFrame = m_frame / 4;
-    int lastMotion = m_motionStack.back();
-    if(isMotionPreemptive(lastMotion) && m_frame && m_currentFrame == NB_MOTION_SPRITES[lastMotion]){
-        m_motionStack.pop_back();
-        changeOffset();
-    }else{
-        m_currentFrame %= NB_MOTION_SPRITES[lastMotion];
-    }
-
-    m_frame++;
-}
-
-bool SpriteAnimation::isMotionPreemptive(int motion) const {
-    if(motion == MOTION_MAGIC_ATTACK || motion == MOTION_DIRECT_ATTACK){
-        return true;
-    }
-    return false;
-}
-
 void SpriteAnimation::VDraw(){
-    int idx = m_spriteOffset + m_currentFrame;
-    auto *pt = g_alita->getTextureManager();
-    auto &offset = m_offsets[idx];
+	auto *pt = g_alita->getTextureManager();
+	auto &offset = m_offsets[m_spriteIndex];
+	Vector2D &levelPos = g_alita->getLevelPos();
 
-    pt->drawTile(m_textureID, idx, m_pos.getX() + offset.getX(), m_pos.getY() + offset.getY(), -1, -1, g_alita->getRenderer());
+	int x = static_cast<int>(m_pos.getX() + offset.getX() - levelPos.getX());
+	int y = static_cast<int>(m_pos.getY() + offset.getY() - levelPos.getY());
+
+	pt->draw(m_aid + "_" + std::to_string(m_spriteIndex), x, y, -1, -1, g_alita->getRenderer());
+}
+
+
+const std::vector<Vector2D> PlayerSpriteAnimation::VELOCITIES = {
+		{0, 0}, {48 * 1, 32 * 1}, {48 * 2, 32 * 3}, {0, 0}, {0, 0}, {0, 0}, {0, 0}
+};
+
+const std::vector<int> PlayerSpriteAnimation::SPRITE_FRAMES = {
+	8, 1, 4, 4, 4, 4
+};
+
+Vector2D PlayerSpriteAnimation::VUpdate(){
+	m_frame++;
+	if(m_frame == m_nbTotalFrames - 1){
+		m_finished = true;
+	}
+
+	m_spriteIndex = m_spriteOffset + m_frame / SPRITE_FRAMES[m_motion];
+	m_pos += m_velocity;
+	return m_pos;
+}
+
+void PlayerSpriteAnimation::VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc){
+	m_finished = false;
+	m_frame = 0;
+	m_motion = motion;
+	m_pos = initPos;
+
+	// compute sprite offset
+	m_spriteOffset = 0;
+	for (int i = 0; i < m_motion; i++) {
+		m_spriteOffset += NB_MOTION_SPRITES[i] * 8;
+	}
+	m_spriteOffset += NB_MOTION_SPRITES[m_motion] * m_orientation;
+
+	m_nbSprites = NB_MOTION_SPRITES[m_motion];
+	m_nbTotalFrames = SPRITE_FRAMES[m_motion] * NB_MOTION_SPRITES[m_motion];
+
+	m_velocity = VELOCITIES[m_motion] / m_nbTotalFrames;
+	m_velocity.setX(m_velocity.getX() * acc.getX());
+	m_velocity.setY(m_velocity.getY() * acc.getY());
+}
+
+void PlayerSpriteAnimation::VSwitchOrientation(int ori){
+	m_orientation = ori;
+}
+
+
+void PlayerSpriteAnimation::VDraw(){
+	SpriteAnimation::VDraw();
+}
+
+
+
+// NPC
+
+const int NPCSpriteAnimation::NB_SPRITE_FRAMES = 12;
+
+void NPCSpriteAnimation::VDraw(){
+	SpriteAnimation::VDraw();
+}
+
+void NPCSpriteAnimation::VSwitchOrientation(int ori){
+	m_orientation = ori;
+}
+
+void NPCSpriteAnimation::VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc){
+	m_finished = false;
+	m_frame = 0;
+	m_motion = motion;
+	m_pos = initPos;
+
+	m_spriteOffset = m_orientation;
+}
+
+Vector2D NPCSpriteAnimation::VUpdate(){
+	m_frame++;
+
+	m_spriteIndex = m_spriteOffset + m_frame / NB_SPRITE_FRAMES % 4;
+	return m_pos;
 }

@@ -19,5 +19,5 @@ void Bullet::draw(){
 const ObjectType PlayerBullet::s_type = "PlayerBullet";
 
 GameObject *PlayerBullet::creator(){
-    return new PlayerBullet;
+    return GCC_NEW PlayerBullet;
 }

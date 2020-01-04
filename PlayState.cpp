@@ -3,11 +3,12 @@
 #include "Game.h"
 #include "Utility.h"
 #include "NPCharacter.h"
+#include "AlitaStd.h"
 
 const GameStateType PlayState::s_gameStateType = "PlayState";
 
 GameState *PlayState::creator(){
-    return new PlayState;
+    return GCC_NEW PlayState;
 }
 
 const GameStateType &PlayState::getGameStateType(){
@@ -29,6 +30,9 @@ bool PlayState::init(XMLElement *doc) {
 	std::string mapID = SAFE_STRING(doc->Attribute("mapID"));
 	m_pgm = g_alita->getMapManager()->create(mapID);
 
+	auto mapCreated = std::make_shared<MapCreatedEventData>(m_pgm, Vector2D(0, 0));
+	g_alita->getEventManager()->queueEvent(mapCreated);
+
 	GameObject *pPlayer = g_alita->getGameObjectFactory()->create("Player");
 	addGameObject(pPlayer);
 
@@ -48,19 +52,25 @@ bool PlayState::initFromGameMap(){
 
 		std::string roleID = (*m_pgm)(i, j).roleID;
 		if(roleID[0] == 'N'){
-			NPCharacter *pnpc = (NPCharacter*)(g_alita->getGameObjectFactory()->create(NPCharacter::s_type));
+			std::string npcType = roleID.substr(0, roleID.size() - 4);
+			NPCharacter *pnpc = (NPCharacter*)(g_alita->getGameObjectFactory()->create(npcType));
 			addGameObject(pnpc);
 
+			AnimationID aid = "NPC_" + roleID.substr(roleID.size() - 3, 3);
+			SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
+			m_pAnimation->VSwitchOrientation(std::stoi(roleID.substr(roleID.size() - 4, 1)) - 1);
+			m_pAnimation->VSwitchMotion(0, tilePos, {0., 0.});
+			pnpc->setSpriteAnimation(m_pAnimation);
+
 			pnpc->setPos(tilePos);
-			TextureID tid = "NPC_" + roleID.substr(roleID.size() - 2, 2);
-			pnpc->setTextureID(tid);
 		}
 
 		std::string &other = (*m_pgm)(i, j).other;
 		if (other != "") {
 			auto it = entrances.find(other);
-			if (it == entrances.cbegin()) {
+			if (it == entrances.end()) {
 				Entrance *pEn = (Entrance*)(g_alita->getGameObjectFactory()->create(Entrance::s_type));
+				entrances[other] = pEn;
 				int enterPosOffset = -1;
 
 				// if "me", switch between the same map, no need to load a new map
@@ -77,13 +87,12 @@ bool PlayState::initFromGameMap(){
 				pEn->setEnterPos(enterPos);
 				pEn->addGrid(tilePos);
 				addGameObject(pEn);
-			}
-			else {
+			} else {
 				it->second->addGrid(tilePos);
 			}
 		}
 	}
-	return true;
+ 	return true;
 }
 
 void PlayState::onPlayerMove(IEventDataPtr pEvent) {
@@ -108,7 +117,7 @@ void PlayState::destroy(){
 void PlayState::onCreateLevel(IEventDataPtr pEvent) {
 	auto p = std::static_pointer_cast<CreateLevelEventData>(pEvent);
 
-	// if not the same game map, create a new one
+	// if not the same game map, create a GCC_NEW one
 	if(p->getGameMapID() != m_pgm->getGameMapID()){
 		std::vector<GameObjectID> toDelete;
 		for (auto it : m_gameObjects) {
@@ -120,7 +129,6 @@ void PlayState::onCreateLevel(IEventDataPtr pEvent) {
 			toDelete.push_back(it.first);
 		}
 
-		delete m_pgm;
 		m_pgm = g_alita->getMapManager()->create(p->getGameMapID());
 		initFromGameMap();
 
@@ -130,16 +138,13 @@ void PlayState::onCreateLevel(IEventDataPtr pEvent) {
 		}
 	}
 
-	// switch to new position
-	Vector2D landingPos = searchAroundEntrance(p->getInitPos());
-	m_gameObjects[PLAYER_ID]->setPos(landingPos);
-	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(PLAYER_ID, landingPos);
-	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+	auto destroyObject = std::make_shared<MapCreatedEventData>(m_pgm, searchAroundEntrance(p->getInitPos()));
+	g_alita->getEventManager()->queueEvent(destroyObject);
 }
 
 Vector2D PlayState::searchAroundEntrance(const Vector2D &center){
-	int ci = center.getY() / g_alita->getTileHeight();
-	int cj = center.getX() / g_alita->getTileWidth();
+	int ci = static_cast<int>(center.getY() / g_alita->getTileHeight());
+	int cj = static_cast<int>(center.getX() / g_alita->getTileWidth());
 	Vector2D space = center;
 	for(int i = -2; i < 3; i++){
 		for(int j = -2; j < 3; j++){
@@ -167,8 +172,11 @@ void PlayState::onDestroyGameObject(IEventDataPtr pEvent){
 }
 
 void PlayState::update(){
+
+	m_frame++;
+
     if(InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)){
-        GameState *p = Game::getInstance()->getStateMachine()->create(PauseState::s_gameStateType);
+		GameStatePtr p = Game::getInstance()->getStateMachine()->create(PauseState::s_gameStateType);
         Game::getInstance()->getStateMachine()->pushState(p);
     }else{
         GameState::update();
@@ -182,7 +190,7 @@ void PlayState::render(){
 
 void PlayState::renderTileLayer(){
 	// i and j denote tile indices
-// x and y denote real pixels
+    // x and y denote real pixels
 
 	int tileWidth = g_alita->getTileWidth();
 	int tileHeight = g_alita->getTileHeight();
@@ -192,8 +200,8 @@ void PlayState::renderTileLayer(){
 	int visibleRows = Game::getInstance()->getWindowHeight() / tileHeight + 2;
 
 	Vector2D &pos = g_alita->getLevelPos();
-	int offset_i = pos.getY() / tileHeight;
-	int offset_j = pos.getX() / tileWidth;
+	int offset_i = static_cast<int>(pos.getY() / tileHeight);
+	int offset_j = static_cast<int>(pos.getX() / tileWidth);
 	int offset_x = static_cast<int>(pos.getX()) % tileWidth;
 	int offset_y = static_cast<int>(pos.getY()) % tileHeight;
 
@@ -214,11 +222,11 @@ void PlayState::renderTileLayer(){
 			y = i * tileHeight - offset_y;
 
 			if (floorID != -1) {
-				pTextureManager->drawTile("FLOOR", floorID, x, y,
+				pTextureManager->draw("FLOOR_" + std::to_string(floorID), x, y,
 					tileWidth, tileHeight, g_alita->getRenderer());
 			}
 			if (tileID != -1) {
-				pTextureManager->drawTile("FJ_" + std::to_string(tileID / 10000), tileID % 10000, x, y,
+				pTextureManager->draw("FJ_" + std::to_string(tileID), x, y,
 					tileWidth, tileHeight, g_alita->getRenderer());
 			}
 		}

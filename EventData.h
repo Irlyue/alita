@@ -3,6 +3,7 @@
 
 #include "AlitaStd.h"
 #include "Vector2D.h"
+#include "GameMap.h"
 
 class IEventData {
 public:
@@ -12,6 +13,8 @@ public:
 	//virtual IEventDataPtr VCopy() const = 0;
 	virtual const char *GetName() const = 0;
 };
+
+using IEventDataPtr = std::shared_ptr<IEventData>;
 
 class BaseEventData: public IEventData{
 public:
@@ -78,6 +81,25 @@ public:
 
 private:
 	GameMapID m_mapID; 
+	Vector2D m_initPos;
+};
+
+class MapCreatedEventData : public BaseEventData {
+public:
+	static const EventType s_eventType;
+
+	explicit MapCreatedEventData(GameMapPtr pgm, const Vector2D &initPos) : m_pgm(pgm), m_initPos(initPos) {}
+
+	virtual const EventType &VGetEventType(void) const { return s_eventType; }
+
+	virtual const char *GetName() const { return "MapCreatedEventData"; }
+
+	ObjectType &getGameMapID() { return m_pgm->getGameMapID(); }
+	Vector2D &getInitPos() { return m_initPos; }
+	GameMapPtr getGameMap() {return m_pgm;}
+
+private:
+	GameMapPtr m_pgm;
 	Vector2D m_initPos;
 };
 #endif // !ALITA_EVENT_DATA_H

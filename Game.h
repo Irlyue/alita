@@ -3,6 +3,7 @@
 
 #include <string>
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "SDL_image.h"
 #include "GameState.h"
 #include "GameStateMachine.h"
@@ -11,6 +12,7 @@
 #include "InputHandler.h"
 #include "EventManager.h"
 #include "MapManager.h"
+#include "SpriteAnimationFactory.h"
 
 class Game{
 public:
@@ -36,8 +38,8 @@ public:
 	EventManager *getEventManager() {return m_pEventManager;}
 	Vector2D &getLevelPos() {return m_levelPos;}
 	MapManager *getMapManager() {return m_pMapManager;}
-
-    XMLDocument *getXMLSettings() const {return m_pDoc;}
+	TTF_Font *getFont() {return m_pFont;}
+	SpriteAnimationFactory *getAnimationPlayerFactory() {return m_pAPFactory;}
 
     int getWindowWidth() const {return m_windowWidth;}
     int getWindowHeight() const {return m_windowHeight;}
@@ -48,13 +50,14 @@ private:
     SDL_Renderer *m_pRenderer = nullptr;
     SDL_Window *m_pWindow = nullptr;
 	Vector2D m_levelPos;
+	TTF_Font *m_pFont = nullptr;
 
     int m_windowWidth = -1;
     int m_windowHeight = -1;
 	int m_tileWidth = 48;
 	int m_tileHeight = 32;
 
-    XMLDocument *m_pDoc = nullptr;
+    XMLDocument m_doc;
 
     bool m_running = false;
 
@@ -64,6 +67,7 @@ private:
     InputHandler *m_pInputHandler = nullptr;
 	EventManager *m_pEventManager = nullptr;
 	MapManager *m_pMapManager = nullptr;
+	SpriteAnimationFactory *m_pAPFactory = nullptr;
 
 	void onLevelMove(IEventDataPtr pEvent);
 };

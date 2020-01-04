@@ -5,8 +5,7 @@ InputHandler *InputHandler::s_pInputHandler = nullptr;
 
 InputHandler *InputHandler::getInstance(){
     if(!s_pInputHandler){
-        s_pInputHandler = new InputHandler;
-        s_pInputHandler->init();
+        s_pInputHandler = GCC_NEW InputHandler;
     }
     return s_pInputHandler;
 }
@@ -18,7 +17,7 @@ bool InputHandler::init(){
     }
 
     m_pKeyStates = SDL_GetKeyboardState(nullptr);
-    m_pKeyReleaseStates = new Uint8[256];
+    m_pKeyReleaseStates = GCC_NEW Uint8[256];
     return true;
 }
 
@@ -94,7 +93,7 @@ void InputHandler::onKeyUp(SDL_Event &event){
 
 void InputHandler::destroy(){
     m_pKeyStates = nullptr;
-    delete m_pKeyReleaseStates;
+    delete[] m_pKeyReleaseStates;
 
     printf("InputHandler destroyed!\n");
 }

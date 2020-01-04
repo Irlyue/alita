@@ -4,7 +4,7 @@ EventManager *EventManager::s_pEventManager = nullptr;
 
 EventManager *EventManager::getInstance(){
 	if(!s_pEventManager){
-		s_pEventManager = new EventManager;
+		s_pEventManager = GCC_NEW EventManager;
 	}
 	return s_pEventManager;
 }
@@ -87,4 +87,8 @@ bool EventManager::update(){
 	}
 
 	return true;
+}
+
+void EventManager::destroy(){
+	printf("EventManager destroyed!\n");
 }

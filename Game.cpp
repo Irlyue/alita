@@ -5,7 +5,7 @@
 #include "GameObjectFactory.h"
 
 
-Game *Game::s_game = new Game;
+Game *Game::s_game = GCC_NEW Game;
 Game *g_alita = Game::getInstance();
 
 
@@ -30,6 +30,11 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
+	if(!TTF_Init()){
+		printf("TTF_Init error: %s\n", TTF_GetError());
+	}
+	m_pFont = TTF_OpenFont("assets/TEMPSITC.TTF", 30);
+
     Uint32 flag = fullScreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN;
     m_pWindow = SDL_CreateWindow(title.c_str(), x, y, width, height, flag);
     if(!m_pWindow){
@@ -37,7 +42,8 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-    m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+    //m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+	m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
     if(!m_pRenderer){
         printf("SDL_CreateRenderer error: %s\n", SDL_GetError());
         return false;
@@ -49,34 +55,39 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-    m_pDoc = new XMLDocument;
-    if(m_pDoc->LoadFile("assets/settings.xml")){
+    if(m_doc.LoadFile("assets/settings.xml")){
         printf("Failed to load settings file!\n");
         return false;
     }
 
-    m_pTextureManager = new TextureManager();
-    if(!m_pTextureManager->init(m_pDoc->FirstChildElement("Textures"))){
+	m_pEventManager = EventManager::getInstance();
+
+    m_pTextureManager = GCC_NEW TextureManager;
+    if(!m_pTextureManager->init(m_doc.FirstChildElement("Textures"))){
         printf("TextureManager failed to initialize!\n");
         // it's ok that some textures are missing since
         // it wouldn't crash the app so we just print out a message
         // without returnning false here.
     }
-    SDL_SetWindowIcon(m_pWindow, IMG_Load(m_pTextureManager->getTexturePath("ICON").c_str()));
+    //SDL_SetWindowIcon(m_pWindow, IMG_Load(m_pTextureManager->getTexturePath("ICON").c_str()));
 
-	m_pMapManager = new MapManager;
+	m_pMapManager = GCC_NEW MapManager;
 	if(!m_pMapManager->init("assets/maps.xml")){
 		printf("MapManager failed to initialize\n");
 		return false;
 	}
 
-	m_pEventManager = EventManager::getInstance();
+	m_pAPFactory = SpriteAnimationFactory::getInstance();
+	if(!m_pAPFactory->init("assets/animation.xml")){
+		printf("AnimationPlayerFactory failed to initialize\n");
+		return false;
+	}
 
 	EventListenerDelegate levelMoveDelegate = fastdelegate::MakeDelegate(this, &Game::onLevelMove);
 	m_pEventManager->addListerner(levelMoveDelegate, ObjectMoveEventData::s_eventType);
 
     m_pGameObjectFactory = GameObjectFactory::getInstance();
-    m_pGameObjectFactory->init(m_pDoc->FirstChildElement("GameObjects"));
+    m_pGameObjectFactory->init(m_doc.FirstChildElement("GameObjects"));
     m_pGameObjectFactory->add("StartMenuButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuExitButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuPlayButton", MenuButton::creator);
@@ -84,10 +95,16 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     m_pGameObjectFactory->add("MenuMainButton", MenuButton::creator);
     m_pGameObjectFactory->add(Player::s_type, Player::creator);
 	m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
-	m_pGameObjectFactory->add(NPCharacter::s_type, NPCharacter::creator);
 
-    m_pGameStateMachine = new GameStateMachine;
-    m_pGameStateMachine->init(m_pDoc->FirstChildElement("GameStates"));
+	for(auto it: m_pGameObjectFactory->getGameObjectInfos()){
+		if(it.first[0] == 'N')
+		    m_pGameObjectFactory->add(it.first, NPCharacter::creator);
+	}
+	
+	m_pGameObjectFactory->add(Legend::s_type, Legend::creator);
+
+    m_pGameStateMachine = GCC_NEW GameStateMachine;
+    m_pGameStateMachine->init(m_doc.FirstChildElement("GameStates"));
     m_pGameStateMachine->add(StartMenuState::s_gameStateType, StartMenuState::creator);
     m_pGameStateMachine->add(PlayState::s_gameStateType, PlayState::creator);
     m_pGameStateMachine->add(PauseState::s_gameStateType, PauseState::creator);
@@ -129,12 +146,17 @@ void Game::handleEvents(){
 }
 
 void Game::destroy(){
-    m_pGameStateMachine->destroy();
-    m_pTextureManager->destroy();
-    m_pInputHandler->destroy();
+    delete m_pGameStateMachine;
+	delete m_pGameObjectFactory;
+	delete m_pEventManager;
+	delete m_pAPFactory;
+	delete m_pMapManager;
+    delete m_pTextureManager;
+    delete m_pInputHandler;
 
     SDL_DestroyRenderer(m_pRenderer);
     SDL_DestroyWindow(m_pWindow);
+	TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
