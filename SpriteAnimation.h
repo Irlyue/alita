@@ -37,6 +37,8 @@ constexpr int ORIENTATIONS[] = {
 constexpr int NB_MOTION_SPRITES[] = {
     4, 6, 6, 6, 6, 3, 4
 };
+using SpriteOffsets = std::vector<Vector2D>;
+using SpriteOffsetsPtr = std::shared_ptr<SpriteOffsets>;
 
 class SpriteAnimation{
 public:
@@ -47,7 +49,7 @@ public:
 	virtual Vector2D VUpdate() = 0;
 
 	void setAnimationID(AnimationID aid) {m_aid = aid;}
-	void setOffsets(const std::vector<Vector2D> &offsets) {m_offsets = offsets;}
+	void setOffsets(SpriteOffsetsPtr offsets) {m_pOffsets = offsets;}
 	bool isFinished() const { return m_finished; }
 	int getMotion() const {return m_motion;}
 
@@ -55,7 +57,7 @@ protected:
 	AnimationID m_aid;
 	Vector2D m_velocity;
 	Vector2D m_pos;
-	std::vector<Vector2D> m_offsets;
+	SpriteOffsetsPtr m_pOffsets;
 
 	bool m_finished = true;
 	int m_motion = 0;
@@ -82,6 +84,9 @@ protected:
 	static const std::vector<int> SPRITE_FRAMES;
 };
 
+class WeaponSpriteAnimation: public PlayerSpriteAnimation {
+};
+
 class NPCSpriteAnimation: public SpriteAnimation{
 public:
 	virtual void VDraw();
@@ -91,6 +96,14 @@ public:
 
 protected:
 	static const int NB_SPRITE_FRAMES;
+};
+
+class MonsterSpriteAnimation: public SpriteAnimation{
+public:
+	virtual void VDraw();
+	virtual void VSwitchOrientation(int ori);
+	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc);
+	virtual Vector2D VUpdate();
 };
 
 

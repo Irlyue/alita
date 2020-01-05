@@ -17,10 +17,11 @@ public:
 private:
 	SpriteAnimationFactory() = default;
 
-	std::vector<Vector2D> loadOffsets(std::string path);
+	SpriteOffsetsPtr loadOffsets(std::string path);
 
 	XMLDocument m_doc;
 	std::map<AnimationID, XMLElement*> m_animationMaps;
+	std::map<std::string, SpriteOffsetsPtr> m_offsetCache;
 };
 
 #endif

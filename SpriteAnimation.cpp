@@ -5,7 +5,7 @@
 
 void SpriteAnimation::VDraw(){
 	auto *pt = g_alita->getTextureManager();
-	auto &offset = m_offsets[m_spriteIndex];
+	auto &offset = (*m_pOffsets)[m_spriteIndex];
 	Vector2D &levelPos = g_alita->getLevelPos();
 
 	int x = static_cast<int>(m_pos.getX() + offset.getX() - levelPos.getX());
@@ -65,7 +65,6 @@ void PlayerSpriteAnimation::VDraw(){
 }
 
 
-
 // NPC
 
 const int NPCSpriteAnimation::NB_SPRITE_FRAMES = 12;
@@ -91,5 +90,22 @@ Vector2D NPCSpriteAnimation::VUpdate(){
 	m_frame++;
 
 	m_spriteIndex = m_spriteOffset + m_frame / NB_SPRITE_FRAMES % 4;
+	return m_pos;
+}
+
+// Monster
+
+void MonsterSpriteAnimation::VDraw(){
+	SpriteAnimation::VDraw();
+}
+
+void MonsterSpriteAnimation::VSwitchOrientation(int ori){
+}
+
+void MonsterSpriteAnimation::VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc){
+	m_pos = initPos;
+}
+
+Vector2D MonsterSpriteAnimation::VUpdate(){
 	return m_pos;
 }

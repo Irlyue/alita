@@ -13,6 +13,7 @@
 #include "EventManager.h"
 #include "MapManager.h"
 #include "SpriteAnimationFactory.h"
+#include "MonsterInfo.h"
 
 class Game{
 public:
@@ -40,6 +41,7 @@ public:
 	MapManager *getMapManager() {return m_pMapManager;}
 	TTF_Font *getFont() {return m_pFont;}
 	SpriteAnimationFactory *getAnimationPlayerFactory() {return m_pAPFactory;}
+	MonsterDB &getMonsterDB() {return m_monsterDB;}
 
     int getWindowWidth() const {return m_windowWidth;}
     int getWindowHeight() const {return m_windowHeight;}
@@ -68,6 +70,8 @@ private:
 	EventManager *m_pEventManager = nullptr;
 	MapManager *m_pMapManager = nullptr;
 	SpriteAnimationFactory *m_pAPFactory = nullptr;
+
+	MonsterDB m_monsterDB;
 
 	void onLevelMove(IEventDataPtr pEvent);
 };

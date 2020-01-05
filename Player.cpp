@@ -22,6 +22,8 @@ bool Player::init(const XMLElement *doc){
 
     m_pAnimation = g_alita->getAnimationPlayerFactory()->create("RPG_1");
 	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+	m_pWeaponAnimation = g_alita->getAnimationPlayerFactory()->create("WEA_002");
+	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
 
 	EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &Player::onMapCreated);
 	g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
@@ -102,16 +104,20 @@ void Player::update(){
 
 		if(orientation != -1){
 			m_pAnimation->VSwitchOrientation(orientation);
+			m_pWeaponAnimation->VSwitchOrientation(orientation);
 		}
 
 		if(motion != MOTION_STILL || m_pAnimation->isFinished()){
 			m_pAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
+			m_pWeaponAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
 		}else{
 			m_pos = m_pAnimation->VUpdate();
+			m_pWeaponAnimation->VUpdate();
 		}
 
 	}else{
 		m_pos = m_pAnimation->VUpdate();
+		m_pWeaponAnimation->VUpdate();
 	}
 
 	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
@@ -119,9 +125,8 @@ void Player::update(){
 }
 
 void Player::draw(){
-    // Vector2D wh = g_alita->getTextureManager()->getTextureSize("RPG_0", m_spriteOffset + m_currentFrame);
-    // g_alita->getTextureManager()->drawTile("RPG_0", m_spriteOffset + m_currentFrame,
-    //                                        m_pos.getX(), m_pos.getY(), -1, -1, g_alita->getRenderer());
+
+	m_pWeaponAnimation->VDraw();
     m_pAnimation->VDraw();
 
 	auto &levelPos = g_alita->getLevelPos();
@@ -135,6 +140,7 @@ void Player::onMapCreated(IEventDataPtr pEvent){
 	// switch to new position
 	m_pos = p->getInitPos();
 	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+	m_pWeaponAnimation->VSwitchMotion(MOTION_STILL, m_pos, { 0., 0. });
 
 	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(PLAYER_ID, m_pos);
 	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);

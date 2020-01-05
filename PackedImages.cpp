@@ -2,6 +2,7 @@
 #include "Game.h"
 #include <fstream>
 #include <set>
+#include <algorithm>
 
 PackedImages::~PackedImages(){
 	if(m_pBuffer)
@@ -33,6 +34,8 @@ bool PackedImages::init(std::string binary_path, std::string offsets_path){
     while(fs>>t>>c){
         m_offsets.push_back(t);
     }
+	// remove duplicate offsets
+	m_offsets.erase(std::unique(m_offsets.begin(), m_offsets.end()), m_offsets.end());
     fs.close();
 
 	int maxBufferSize = getMaxBufferSize(m_offsets);

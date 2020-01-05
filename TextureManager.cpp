@@ -44,6 +44,8 @@ bool TextureManager::loadGlobalTextures(){
 	loadPackedImages("GAME", false);
 	loadPackedImages("FLOOR", false);
 	loadPackedImages("RPG_1", false);
+	loadPackedImages("WEA_002", false);
+	loadPackedImages("WEA_040", false);
 	
     return success;
 }
@@ -157,11 +159,19 @@ void TextureManager::onPreLoadTextures(IEventDataPtr pEvent){
 			if(roleID[0] == 'N'){
 				// load NPC
 				std::string npcID = "NPC_" + roleID.substr(roleID.size() - 3, 3);
-				loadPackedImages(npcID);
+				if(m_textureMaps.find(npcID + "_0") == m_textureMaps.end())
+					loadPackedImages(npcID);
 			}
 
 			if(roleID[0] == 'M'){
 				// load Monster
+				std::string monName = roleID.substr(1, roleID.size() - 1);
+				auto &info = g_alita->getMonsterDB()[monName];
+				std::string monID = std::to_string(info.Pic);
+				std::string monAnimationID = "MON_" + std::string(3 - monID.size(), '0') + monID;
+
+				if(m_textureMaps.find(monAnimationID + "_0") == m_textureMaps.end())
+					loadPackedImages(monAnimationID);
 			}
 		}
 	}

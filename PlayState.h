@@ -3,6 +3,9 @@
 
 #include "GameState.h"
 #include "GameMap.h"
+#include "Monster.h"
+#include "NPCharacter.h"
+#include "Entrance.h"
 
 class PlayState: public GameState{
 public:
@@ -31,6 +34,10 @@ private:
 	void onCreateLevel(IEventDataPtr pEvent);
 	void onDestroyGameObject(IEventDataPtr pEvent);
 	bool initFromGameMap();
+
+	NPCharacter *createNPC(std::string roleID, Vector2D &initPos);
+	Entrance *createEntrance(std::string other, Vector2D &initPos);
+	Monster *PlayState::createMonster(std::string roleID, Vector2D &initPos);
 
 	Vector2D searchAroundEntrance(const Vector2D &center);
 	

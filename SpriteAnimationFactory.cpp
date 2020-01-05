@@ -33,28 +33,43 @@ SpriteAnimationPtr SpriteAnimationFactory::create(AnimationID aid){
 		return SpriteAnimationPtr();
 	}
 
-	std::vector<Vector2D> spriteOffsets = loadOffsets(NP(root + "/" + findIt->second->Attribute("soPath")));
+	auto pSpriteOffsets = loadOffsets(NP(root + "/" + findIt->second->Attribute("soPath")));
 
 	std::string animationType = aid.substr(0, 3);
 	if(animationType == "RPG"){
 		PlayerSpriteAnimation *ppsa = GCC_NEW PlayerSpriteAnimation;
 		ppsa->setAnimationID(aid);
-		ppsa->setOffsets(spriteOffsets);
+		ppsa->setOffsets(pSpriteOffsets);
 		return SpriteAnimationPtr(ppsa);
+	}else if(animationType == "WEA"){
+		WeaponSpriteAnimation *pwsa = GCC_NEW WeaponSpriteAnimation;
+		pwsa->setAnimationID(aid);
+		pwsa->setOffsets(pSpriteOffsets);
+		return SpriteAnimationPtr(pwsa);
 	}else if(animationType == "NPC"){
 		NPCSpriteAnimation *pnsa = GCC_NEW NPCSpriteAnimation;
 		pnsa->setAnimationID(aid);
-		pnsa->setOffsets(spriteOffsets);
+		pnsa->setOffsets(pSpriteOffsets);
 		return SpriteAnimationPtr(pnsa);
-	}else if(animationType == "Monster"){
-		return SpriteAnimationPtr();
+	}else if(animationType == "MON"){
+		MonsterSpriteAnimation *pmsa = GCC_NEW MonsterSpriteAnimation;
+		pmsa->setAnimationID(aid);
+		pmsa->setOffsets(pSpriteOffsets);
+		return SpriteAnimationPtr(pmsa);
 	}else{
 		return SpriteAnimationPtr();
 	}
 }
 
 
-std::vector<Vector2D> SpriteAnimationFactory::loadOffsets(std::string path){
+SpriteOffsetsPtr SpriteAnimationFactory::loadOffsets(std::string path){
+	// if it's already in the cache, just return it.
+	auto findIt = m_offsetCache.find(path);
+	if(findIt != m_offsetCache.end()){
+		return findIt->second;
+	}
+
+	// otherwise, read from file
 	std::fstream fs;
 	fs.open(path, std::fstream::in);
 
@@ -62,12 +77,13 @@ std::vector<Vector2D> SpriteAnimationFactory::loadOffsets(std::string path){
 		printf("Error loading %s\n", path.c_str());
 	}
 
-	std::vector<Vector2D> offsets;
+	auto offsets = std::make_shared<SpriteOffsets>();
 	int x, y;
 	char c;
 	while (fs >> x >> c >> y >> c) {
-		offsets.emplace_back(x, y);
+		offsets->emplace_back(x, y);
 	}
+	m_offsetCache[path] = offsets;
 
 	return offsets;
 }

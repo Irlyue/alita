@@ -52,40 +52,19 @@ bool PlayState::initFromGameMap(){
 
 		std::string roleID = (*m_pgm)(i, j).roleID;
 		if(roleID[0] == 'N'){
-			std::string npcType = roleID.substr(0, roleID.size() - 4);
-			NPCharacter *pnpc = (NPCharacter*)(g_alita->getGameObjectFactory()->create(npcType));
-			addGameObject(pnpc);
+			addGameObject(createNPC(roleID, tilePos));
+		}
 
-			AnimationID aid = "NPC_" + roleID.substr(roleID.size() - 3, 3);
-			SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
-			m_pAnimation->VSwitchOrientation(std::stoi(roleID.substr(roleID.size() - 4, 1)) - 1);
-			m_pAnimation->VSwitchMotion(0, tilePos, {0., 0.});
-			pnpc->setSpriteAnimation(m_pAnimation);
-
-			pnpc->setPos(tilePos);
+		if(roleID[0] == 'M'){
+			addGameObject(createMonster(roleID, tilePos));
 		}
 
 		std::string &other = (*m_pgm)(i, j).other;
 		if (other != "") {
 			auto it = entrances.find(other);
 			if (it == entrances.end()) {
-				Entrance *pEn = (Entrance*)(g_alita->getGameObjectFactory()->create(Entrance::s_type));
+				Entrance *pEn = createEntrance(other, tilePos);
 				entrances[other] = pEn;
-				int enterPosOffset = -1;
-
-				// if "me", switch between the same map, no need to load a new map
-				if(toLower(other.substr(0, 2)) == "me"){
-					pEn->setToWhere(m_pgm->getGameMapID());
-					enterPosOffset = 2;
-				}else{
-					pEn->setToWhere(other.substr(0, 4));
-					enterPosOffset = 4;
-				}
-
-				Vector2D enterPos(std::stod(other.substr(enterPosOffset, 4)) * tileWidth,
-					std::stod(other.substr(enterPosOffset + 4, 4)) * tileHeight);
-				pEn->setEnterPos(enterPos);
-				pEn->addGrid(tilePos);
 				addGameObject(pEn);
 			} else {
 				it->second->addGrid(tilePos);
@@ -93,6 +72,60 @@ bool PlayState::initFromGameMap(){
 		}
 	}
  	return true;
+}
+
+Monster *PlayState::createMonster(std::string roleID, Vector2D &initPos) {
+	std::string monName = roleID.substr(1, roleID.size() - 1);
+	Monster *pm = (Monster*)(g_alita->getGameObjectFactory()->create("Monster"));
+	auto &info = g_alita->getMonsterDB()[monName];
+	std::string monID = std::to_string(info.Pic);
+	AnimationID aid = "MON_" + std::string(3 - monID.size(), '0') + monID;
+	SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
+	m_pAnimation->VSwitchMotion(0, initPos, { 0., 0. });
+	
+	pm->setSpriteAnimation(m_pAnimation);
+	pm->setPos(initPos);
+	return pm;
+}
+
+NPCharacter *PlayState::createNPC(std::string roleID, Vector2D &initPos){
+	std::string npcType = roleID.substr(0, roleID.size() - 4);
+	NPCharacter *pnpc = (NPCharacter*)(g_alita->getGameObjectFactory()->create(npcType));
+
+	AnimationID aid = "NPC_" + roleID.substr(roleID.size() - 3, 3);
+	SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
+	m_pAnimation->VSwitchOrientation(std::stoi(roleID.substr(roleID.size() - 4, 1)) - 1);
+	m_pAnimation->VSwitchMotion(0, initPos, { 0., 0. });
+	pnpc->setSpriteAnimation(m_pAnimation);
+
+	pnpc->setPos(initPos);
+	return pnpc;
+}
+
+Entrance *PlayState::createEntrance(std::string other, Vector2D &initPos){
+	double tileWidth = g_alita->getTileWidth();
+	double tileHeight = g_alita->getTileHeight();
+
+	Entrance *pEn = (Entrance*)(g_alita->getGameObjectFactory()->create(Entrance::s_type));
+	
+	int enterPosOffset = -1;
+
+	// if "me", switch between the same map, no need to load a new map
+	if (toLower(other.substr(0, 2)) == "me") {
+		pEn->setToWhere(m_pgm->getGameMapID());
+		enterPosOffset = 2;
+	}
+	else {
+		pEn->setToWhere(other.substr(0, 4));
+		enterPosOffset = 4;
+	}
+
+	Vector2D enterPos(std::stod(other.substr(enterPosOffset, 4)) * tileWidth,
+		std::stod(other.substr(enterPosOffset + 4, 4)) * tileHeight);
+	pEn->setEnterPos(enterPos);
+	pEn->addGrid(initPos);
+
+	return pEn;
 }
 
 void PlayState::onPlayerMove(IEventDataPtr pEvent) {

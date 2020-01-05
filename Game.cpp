@@ -42,8 +42,8 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-    //m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
-	m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
+    m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
+	//m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
     if(!m_pRenderer){
         printf("SDL_CreateRenderer error: %s\n", SDL_GetError());
         return false;
@@ -82,6 +82,10 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
 		printf("AnimationPlayerFactory failed to initialize\n");
 		return false;
 	}
+	if(!m_monsterDB.init("assets/Mon1.txt")){
+		printf("MonsterDB failed to initialize\n");
+		return false;
+	}
 
 	EventListenerDelegate levelMoveDelegate = fastdelegate::MakeDelegate(this, &Game::onLevelMove);
 	m_pEventManager->addListerner(levelMoveDelegate, ObjectMoveEventData::s_eventType);
@@ -95,6 +99,7 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     m_pGameObjectFactory->add("MenuMainButton", MenuButton::creator);
     m_pGameObjectFactory->add(Player::s_type, Player::creator);
 	m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
+	m_pGameObjectFactory->add(Monster::s_type, Monster::creator);
 
 	for(auto it: m_pGameObjectFactory->getGameObjectInfos()){
 		if(it.first[0] == 'N')
