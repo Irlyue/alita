@@ -15,7 +15,7 @@ public:
     virtual bool init(const XMLElement *doc);
 	virtual ~GameObject() {destroy();}
 
-    virtual void destroy() {};
+    virtual void destroy();
 
     virtual void draw();
 

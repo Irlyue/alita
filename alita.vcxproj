@@ -105,6 +105,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Brain.cpp" />
+    <ClCompile Include="GameObjectStateMachine.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MonsterInfo.cpp" />
     <ClCompile Include="SpriteAnimationFactory.cpp" />
@@ -136,6 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlitaStd.h" />
+    <ClInclude Include="Brain.h" />
+    <ClInclude Include="GameObjectStateMachine.h" />
     <ClInclude Include="MonsterInfo.h" />
     <ClInclude Include="SpriteAnimationFactory.h" />
     <ClInclude Include="CallBack.h" />
@@ -250,6 +254,11 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vector2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="dev\tinyxml2\tinyxml2\tinyxml2.vcxproj">
+      <Project>{d1c528b6-aa02-4d29-9d61-dc08e317a70d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

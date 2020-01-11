@@ -100,6 +100,10 @@ protected:
 
 class MonsterSpriteAnimation: public SpriteAnimation{
 public:
+    const static int NB_MOTION_SPRITES[6];
+    const static int SPRITE_FRAMES[6];
+    const static std::vector<Vector2D> VELOCITIES;
+
 	virtual void VDraw();
 	virtual void VSwitchOrientation(int ori);
 	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc);

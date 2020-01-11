@@ -99,6 +99,12 @@
     <ClCompile Include="MonsterInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectStateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Brain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlitaStd.h">
@@ -444,6 +450,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MonsterInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectStateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

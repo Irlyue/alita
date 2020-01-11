@@ -1,12 +1,18 @@
 #ifndef ALITA_MONSTER_H
 #define ALITA_MONSTER_H
 
+#include "Brain.h"
 #include "GameObject.h"
 #include "SpriteAnimation.h"
+#include "GameObjectStateMachine.h"
 
 class Monster: public GameObject{
 public:
+    virtual ~Monster() {};
+
 	const static ObjectType s_type;
+
+    void onTheFlyInit(SpriteAnimationPtr pAnimation, Vector2D initPos);
 
 	static GameObject *creator();
 
@@ -23,6 +29,10 @@ private:
 	std::string m_name;
 
 	SpriteAnimationPtr m_pAnimation;
+
+    MonsterStateMachine m_msMachine;
+
+    MonsterBrain m_brain;
 };
 
 #endif

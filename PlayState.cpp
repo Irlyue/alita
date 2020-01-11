@@ -76,15 +76,15 @@ bool PlayState::initFromGameMap(){
 
 Monster *PlayState::createMonster(std::string roleID, Vector2D &initPos) {
 	std::string monName = roleID.substr(1, roleID.size() - 1);
-	Monster *pm = (Monster*)(g_alita->getGameObjectFactory()->create("Monster"));
+	
 	auto &info = g_alita->getMonsterDB()[monName];
 	std::string monID = std::to_string(info.Pic);
 	AnimationID aid = "MON_" + std::string(3 - monID.size(), '0') + monID;
 	SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
 	m_pAnimation->VSwitchMotion(0, initPos, { 0., 0. });
 	
-	pm->setSpriteAnimation(m_pAnimation);
-	pm->setPos(initPos);
+    Monster *pm = (Monster*)(g_alita->getGameObjectFactory()->create("Monster"));
+    pm->onTheFlyInit(m_pAnimation, initPos);
 	return pm;
 }
 
@@ -152,27 +152,23 @@ void PlayState::onCreateLevel(IEventDataPtr pEvent) {
 
 	// if not the same game map, create a GCC_NEW one
 	if(p->getGameMapID() != m_pgm->getGameMapID()){
-		std::vector<GameObjectID> toDelete;
-		for (auto it : m_gameObjects) {
-			if (it.second->getGameObjectID() == PLAYER_ID) {
+		for (auto it = m_gameObjects.begin(); it != m_gameObjects.end();) {
+			if (it->second->getGameObjectID() == PLAYER_ID) {
+                it++;
 				continue;
 			}
 
-			it.second->removeAllDelegates();
-			toDelete.push_back(it.first);
+            delete it->second;
+			m_gameObjects.erase(it++);
 		}
 
 		m_pgm = g_alita->getMapManager()->create(p->getGameMapID());
 		initFromGameMap();
 
-		for (auto &key : toDelete) {
-			auto destroyObject = std::make_shared<DestroyObjectEventData>(key);
-			g_alita->getEventManager()->queueEvent(destroyObject);
-		}
 	}
 
 	auto destroyObject = std::make_shared<MapCreatedEventData>(m_pgm, searchAroundEntrance(p->getInitPos()));
-	g_alita->getEventManager()->queueEvent(destroyObject);
+	g_alita->getEventManager()->triggerEvent(destroyObject);
 }
 
 Vector2D PlayState::searchAroundEntrance(const Vector2D &center){

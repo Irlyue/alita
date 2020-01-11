@@ -34,3 +34,7 @@ bool GameObject::init(const XMLElement *doc){
 
     return true;
 }
+
+void GameObject::destroy(){
+    removeAllDelegates();
+}
