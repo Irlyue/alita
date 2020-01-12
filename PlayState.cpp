@@ -81,6 +81,7 @@ Monster *PlayState::createMonster(std::string roleID, Vector2D &initPos) {
 	std::string monID = std::to_string(info.Pic);
 	AnimationID aid = "MON_" + std::string(3 - monID.size(), '0') + monID;
 	SpriteAnimationPtr m_pAnimation = g_alita->getAnimationPlayerFactory()->create(aid);
+    std::static_pointer_cast<MonsterSpriteAnimation>(m_pAnimation)->setMonsterName(monName);
 	m_pAnimation->VSwitchMotion(0, initPos, { 0., 0. });
 	
     Monster *pm = (Monster*)(g_alita->getGameObjectFactory()->create("Monster"));
@@ -215,6 +216,16 @@ void PlayState::update(){
 void PlayState::render(){
 	renderTileLayer();
     GameState::render();
+    renderLegend();
+}
+
+void PlayState::renderLegend(){
+    Vector2D playerPos = m_gameObjects[PLAYER_ID]->getPos();
+    Vector2D pos(playerPos.getX() / g_alita->getTileWidth(), playerPos.getY() / g_alita->getTileHeight());
+    char buf[32];
+    sprintf_s(buf, "%s (%3.0f, %3.0f)", m_pgm->getName().c_str(), pos.getX(), pos.getY());
+    g_alita->getTextureManager()->drawText(buf, 0, 0, -1, -1,
+        { 255, 255, 255, 0 }, g_alita->getRenderer(), g_alita->getFont());
 }
 
 void PlayState::renderTileLayer(){

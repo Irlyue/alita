@@ -18,19 +18,11 @@ bool Legend::init(const XMLElement *doc){
 }
 
 void Legend::draw(){
-	return;
-	TTF_Font *pfont = g_alita->getFont();
-	SDL_Renderer *pRenderer = g_alita->getRenderer();
-	SDL_Color textColor = {255, 255, 255, 0};
-	Vector2D &levelPos = g_alita->getLevelPos();
-	char buf[32];
-	sprintf_s(buf, "(%.0f, %.0f)", levelPos.getX(), levelPos.getY());
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(pfont, buf, textColor); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+    Vector2D offset(g_alita->getWindowWidth() / 2, g_alita->getWindowHeight() / 2);
+    Vector2D playerPos = g_alita->getLevelPos() + offset;
+    char buf[32];
+    sprintf_s(buf, "(%.0f, %.0f)", playerPos.getX(), playerPos.getY());
 
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(pRenderer, surfaceMessage);
-	SDL_Rect dst = {0, 0, 100, 30};
-	SDL_RenderCopy(pRenderer, Message, nullptr, &dst);
-
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
+    g_alita->getTextureManager()->drawText(buf, playerPos.getX(), playerPos.getY(), -1, -1,
+        {255, 255, 255, 0}, g_alita->getRenderer(), g_alita->getFont());
 }

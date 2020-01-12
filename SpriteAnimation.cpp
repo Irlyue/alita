@@ -102,7 +102,16 @@ const std::vector<Vector2D> MonsterSpriteAnimation::VELOCITIES = {
 };
 
 void MonsterSpriteAnimation::VDraw(){
-	SpriteAnimation::VDraw();
+    auto &info = g_alita->getMonsterDB()[m_monsterName];
+
+    TextureID tid = m_aid + "_" + std::to_string(m_spriteIndex);
+    SDL_Texture *pTexture = g_alita->getTextureManager()->getTexture(tid);
+
+    SDL_SetTextureColorMod(pTexture, info.R, info.G, info.B);
+    SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(pTexture, info.A);
+
+    SpriteAnimation::VDraw();
 }
 
 void MonsterSpriteAnimation::VSwitchOrientation(int ori){

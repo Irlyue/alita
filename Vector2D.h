@@ -75,4 +75,6 @@ private:
 
 };
 
+bool isInsideBox(const Vector2D &p, const Vector2D &upperLeft, const Vector2D &lowerRight);
+
 #endif

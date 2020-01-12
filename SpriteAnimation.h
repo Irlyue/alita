@@ -5,6 +5,7 @@
 #include <memory>
 #include "AlitaStd.h"
 #include "Vector2D.h"
+#include "MonsterInfo.h"
 
 enum Orientation{
     ORI_ORIENTI_UPPER=0,
@@ -108,6 +109,11 @@ public:
 	virtual void VSwitchOrientation(int ori);
 	virtual void VSwitchMotion(int motion, const Vector2D &initPos, const Vector2D &acc);
 	virtual Vector2D VUpdate();
+
+    void setMonsterName(MonsterName name) {m_monsterName = name;}
+
+private:
+    MonsterName m_monsterName;
 };
 
 

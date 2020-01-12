@@ -3,7 +3,12 @@
 #include "Utility.h"
 #include <set>
 
-
+// Helper function to load texture from an image file
+// Arguments
+// ---------
+//     path: path to the image file
+// Return
+//     a SDL_Texture* giving the loaded texture if success, otherwise a null pointer.
 static SDL_Texture *loadTexture(const std::string &path){
     SDL_Surface *pSurface = IMG_Load(path.c_str());
     if(!pSurface){
@@ -59,6 +64,10 @@ bool TextureManager::init(XMLElement *doc){
 	return loadGlobalTextures();
 }
 
+
+// Find the texture specified by the texture ID
+// Return
+//     If not found, a null pointer is returned.
 SDL_Texture *TextureManager::getTexture(const TextureID &tid){
     auto it = m_textureMaps.find(tid);
     if(it != m_textureMaps.cend()){
@@ -85,6 +94,30 @@ void TextureManager::draw(const TextureID &tid, int x, int y, int w, int h, SDL_
 	SDL_Rect src = { 0, 0, w, h };
 	SDL_Rect dst = { x, y, w, h };
 	SDL_RenderCopy(pRenderer, p, &src, &dst);
+}
+
+
+// Draw utf-8 text
+// Arguments
+// ---------
+//     text: utf-8 encoded characters
+//     x, y: pixel position on the screen to draw the text
+//     w, h: width and height of the rendered text, set it to -1 to copy the whole rendered text.
+//     textColor: color of the text, {R, G, B, A}
+void TextureManager::drawText(const std::string &text, int x, int y, int w, int h, SDL_Color textColor,
+    SDL_Renderer *pRenderer, TTF_Font *pFont){
+
+    SDL_Surface *pSurface = TTF_RenderUTF8_Solid(pFont, text.c_str(), textColor);
+    SDL_Texture *pMessage = SDL_CreateTextureFromSurface(pRenderer, pSurface);
+    if(w == -1 || h == -1){
+        w = pSurface->w;
+        h = pSurface->h;
+    }
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(pRenderer, pMessage, nullptr, &dst);
+
+    SDL_FreeSurface(pSurface);
+    SDL_DestroyTexture(pMessage);
 }
 
 void TextureManager::destroy(){
@@ -123,6 +156,16 @@ void TextureManager::releaseLastGameMapTextures(){
 	m_toDeleteTextures.clear();
 }
 
+// Preload the textures that are needed in a game map, including the following stuff:
+//     - the FJ_1, FJ_2, FJ_3 and FJ_4 textures, namely the building images
+//     - NPCs
+//     - Monsters
+// This function first releases the textures for the last game map and than loaded the
+// new ones for the current map.
+//
+// Arguments
+// ---------
+//     pEvent: a shared pointer to `MapCreatedEventData`
 void TextureManager::onPreLoadTextures(IEventDataPtr pEvent){
 	releaseLastGameMapTextures();
 

@@ -40,6 +40,8 @@ protected:
     int calcOrientation(const Vector2D &v);
     int calcSector(const Vector2D &v);
 
+    void renderLegend();
+
 	void onMapCreated(IEventDataPtr pEvent);
 };
 

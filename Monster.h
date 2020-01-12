@@ -26,6 +26,8 @@ public:
 
 private:
 
+    bool isInsideCamera() const;
+
 	std::string m_name;
 
 	SpriteAnimationPtr m_pAnimation;

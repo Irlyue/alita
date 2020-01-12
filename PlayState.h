@@ -29,6 +29,7 @@ private:
 	GameMapPtr m_pgm;
 
 	void renderTileLayer();
+    void renderLegend();
 
 	void onPlayerMove(IEventDataPtr pEvent);
 	void onCreateLevel(IEventDataPtr pEvent);

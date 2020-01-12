@@ -30,10 +30,10 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-	if(!TTF_Init()){
+	if(TTF_Init() == -1){
 		printf("TTF_Init error: %s\n", TTF_GetError());
 	}
-	m_pFont = TTF_OpenFont("assets/TEMPSITC.TTF", 30);
+	m_pFont = TTF_OpenFont("assets/simsun.ttc", 14);
 
     Uint32 flag = fullScreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN;
     m_pWindow = SDL_CreateWindow(title.c_str(), x, y, width, height, flag);
