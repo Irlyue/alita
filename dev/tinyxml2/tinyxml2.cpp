@@ -32,8 +32,6 @@ distribution.
 #   include <cstdarg>
 #endif
 
-#define GCC_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-
 #if defined(_MSC_VER) && (_MSC_VER >= 1400 ) && (!defined WINCE)
 	// Microsoft Visual Studio, version 2005 and higher. Not WinCE.
 	/*int _snprintf_s(
@@ -185,7 +183,7 @@ void StrPair::SetStr( const char* str, int flags )
     Reset();
     size_t len = strlen( str );
     TIXMLASSERT( _start == 0 );
-    _start = GCC_NEW char[ len+1 ];
+    _start = new char[ len+1 ];
     memcpy( _start, str, len+1 );
     _end = _start + len;
     _flags = flags | NEEDS_DELETE;
@@ -2310,7 +2308,7 @@ XMLError XMLDocument::LoadFile( FILE* fp )
 
     const size_t size = filelength;
     TIXMLASSERT( _charBuffer == 0 );
-    _charBuffer = GCC_NEW char[size+1];
+    _charBuffer = new char[size+1];
     const size_t read = fread( _charBuffer, 1, size, fp );
     if ( read != size ) {
         SetError( XML_ERROR_FILE_READ_ERROR, 0, 0 );
@@ -2366,7 +2364,7 @@ XMLError XMLDocument::Parse( const char* p, size_t len )
         len = strlen( p );
     }
     TIXMLASSERT( _charBuffer == 0 );
-    _charBuffer = GCC_NEW char[ len+1 ];
+    _charBuffer = new char[ len+1 ];
     memcpy( _charBuffer, p, len );
     _charBuffer[len] = 0;
 
@@ -2405,7 +2403,7 @@ void XMLDocument::SetError( XMLError error, int lineNum, const char* format, ...
 	_errorStr.Reset();
 
     const size_t BUFFER_SIZE = 1000;
-    char* buffer = GCC_NEW char[BUFFER_SIZE];
+    char* buffer = new char[BUFFER_SIZE];
 
     TIXMLASSERT(sizeof(error) <= sizeof(int));
     TIXML_SNPRINTF(buffer, BUFFER_SIZE, "Error=%s ErrorID=%d (0x%x) Line number=%d", ErrorIDToName(error), int(error), int(error), lineNum);

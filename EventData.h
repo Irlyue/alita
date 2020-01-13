@@ -4,6 +4,7 @@
 #include "AlitaStd.h"
 #include "Vector2D.h"
 #include "GameMap.h"
+#include <memory>
 
 class IEventData {
 public:
@@ -94,7 +95,7 @@ public:
 
 	virtual const char *GetName() const { return "MapCreatedEventData"; }
 
-	ObjectType &getGameMapID() { return m_pgm->getGameMapID(); }
+	ObjectType getGameMapID() { return m_pgm->getGameMapID(); }
 	Vector2D &getInitPos() { return m_initPos; }
 	GameMapPtr getGameMap() {return m_pgm;}
 

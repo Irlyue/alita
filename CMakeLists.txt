@@ -3,10 +3,10 @@ project(alita)
 
 set(CMAKE_CXX_STANDARD 11)
 
+ADD_SUBDIRECTORY(dev/tinyxml2)
+
 include_directories(alita /usr/include/SDL2)
 include_directories(alita dev/tinyxml2/include)
-link_directories(dev/tinyxml2/lib)
-
 
 add_executable(alita main.cpp Game.cpp InputHandler.cpp Vector2D.cpp
     GameObject.cpp GameObjectFactory.cpp GameState.cpp GameStateMachine.cpp

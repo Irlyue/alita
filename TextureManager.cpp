@@ -107,6 +107,8 @@ void TextureManager::draw(const TextureID &tid, int x, int y, int w, int h, SDL_
 void TextureManager::drawText(const std::string &text, int x, int y, int w, int h, SDL_Color textColor,
     SDL_Renderer *pRenderer, TTF_Font *pFont){
 
+    return;
+
     SDL_Surface *pSurface = TTF_RenderUTF8_Solid(pFont, text.c_str(), textColor);
     SDL_Texture *pMessage = SDL_CreateTextureFromSurface(pRenderer, pSurface);
     if(w == -1 || h == -1){

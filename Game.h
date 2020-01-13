@@ -35,29 +35,29 @@ public:
     TextureManager *getTextureManager() {return m_pTextureManager;}
     InputHandler *getInputHandler() {return m_pInputHandler;}
     GameStateMachine *getStateMachine() const {return m_pGameStateMachine;}
-	GameObjectFactory *getGameObjectFactory() const {return m_pGameObjectFactory;}
-	EventManager *getEventManager() {return m_pEventManager;}
-	Vector2D &getLevelPos() {return m_levelPos;}
-	MapManager *getMapManager() {return m_pMapManager;}
-	TTF_Font *getFont() {return m_pFont;}
-	SpriteAnimationFactory *getAnimationPlayerFactory() {return m_pAPFactory;}
-	MonsterDB &getMonsterDB() {return m_monsterDB;}
+    GameObjectFactory *getGameObjectFactory() const {return m_pGameObjectFactory;}
+    EventManager *getEventManager() {return m_pEventManager;}
+    Vector2D &getLevelPos() {return m_levelPos;}
+    MapManager *getMapManager() {return m_pMapManager;}
+    TTF_Font *getFont() {return m_pFont;}
+    SpriteAnimationFactory *getAnimationPlayerFactory() {return m_pAPFactory;}
+    MonsterDB &getMonsterDB() {return m_monsterDB;}
 
     int getWindowWidth() const {return m_windowWidth;}
     int getWindowHeight() const {return m_windowHeight;}
-	int getTileWidth() const {return m_tileWidth;}
-	int getTileHeight() const {return m_tileHeight;}
+    int getTileWidth() const {return m_tileWidth;}
+    int getTileHeight() const {return m_tileHeight;}
 
 private:
     SDL_Renderer *m_pRenderer = nullptr;
     SDL_Window *m_pWindow = nullptr;
-	Vector2D m_levelPos;
-	TTF_Font *m_pFont = nullptr;
+    Vector2D m_levelPos;
+    TTF_Font *m_pFont = nullptr;
 
     int m_windowWidth = -1;
     int m_windowHeight = -1;
-	int m_tileWidth = 48;
-	int m_tileHeight = 32;
+    int m_tileWidth = 48;
+    int m_tileHeight = 32;
 
     XMLDocument m_doc;
 
@@ -67,13 +67,13 @@ private:
     TextureManager *m_pTextureManager = nullptr;
     GameObjectFactory *m_pGameObjectFactory = nullptr;
     InputHandler *m_pInputHandler = nullptr;
-	EventManager *m_pEventManager = nullptr;
-	MapManager *m_pMapManager = nullptr;
-	SpriteAnimationFactory *m_pAPFactory = nullptr;
+    EventManager *m_pEventManager = nullptr;
+    MapManager *m_pMapManager = nullptr;
+    SpriteAnimationFactory *m_pAPFactory = nullptr;
 
-	MonsterDB m_monsterDB;
+    MonsterDB m_monsterDB;
 
-	void onLevelMove(IEventDataPtr pEvent);
+    void onLevelMove(IEventDataPtr pEvent);
 };
 
 extern Game *g_alita;

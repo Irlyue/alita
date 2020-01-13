@@ -6,19 +6,20 @@
 #include <cwchar>
 #include <iostream>
 #include <cstdio>
-#include <Windows.h>
 
 int main(int, char**){
     // disable output buffer, so the outputs are flushed immediately.
     setbuf(stdout, nullptr);
-	setbuf(stderr, nullptr);
+    setbuf(stderr, nullptr);
 
-	int tmpDbgFlag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-	tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;
-	_CrtSetDbgFlag(tmpDbgFlag);
+#if defined WIN32
+    int tmpDbgFlag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+    tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;
+    _CrtSetDbgFlag(tmpDbgFlag);
+#endif
 
-	//_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-	//_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
+    //_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+    //_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 
     Game *game = Game::getInstance();
     if(!game->init("Alita", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 730, 480)){
@@ -47,10 +48,12 @@ int main(int, char**){
     }
 
     game->destroy();
-	delete game;
+    delete game;
 
     printf("Done!\n");
 
-	_CrtDumpMemoryLeaks();
+#if defined WIN32
+    _CrtDumpMemoryLeaks();
+#endif
     return 0;
 }
