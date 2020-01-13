@@ -35,14 +35,14 @@ protected:
     int m_motion = 0;
 
     SpriteAnimationPtr m_pAnimation;
-	SpriteAnimationPtr m_pWeaponAnimation;
+    SpriteAnimationPtr m_pWeaponAnimation;
 
     int calcOrientation(const Vector2D &v);
     int calcSector(const Vector2D &v);
 
     void renderLegend();
 
-	void onMapCreated(IEventDataPtr pEvent);
+    void onMapCreated(IEventDataPtr pEvent);
 };
 
 #endif

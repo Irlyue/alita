@@ -11,7 +11,7 @@ using GameObjectMap = std::map<GameObjectID, GameObject*>;
 
 class GameState{
 public:
-	virtual ~GameState(){}
+    virtual ~GameState(){}
     virtual bool init(XMLElement *doc);
 
     virtual void update();
@@ -28,7 +28,7 @@ public:
 
     virtual const GameStateType &getGameStateType() = 0;
 
-	bool removeGameObject(GameObjectID objID);
+    bool removeGameObject(GameObjectID objID);
 
     bool addGameObject(GameObject *pGameObj);
 

@@ -30,10 +30,10 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-	if(TTF_Init() == -1){
-		printf("TTF_Init error: %s\n", TTF_GetError());
-	}
-	m_pFont = TTF_OpenFont("assets/simsun.ttc", 14);
+    if(TTF_Init() == -1){
+        printf("TTF_Init error: %s\n", TTF_GetError());
+    }
+    m_pFont = TTF_OpenFont("assets/simsun.ttc", 14);
 
     Uint32 flag = fullScreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN;
     m_pWindow = SDL_CreateWindow(title.c_str(), x, y, width, height, flag);
@@ -43,7 +43,7 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     }
 
     m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED);
-	//m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
+    //m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_SOFTWARE);
     if(!m_pRenderer){
         printf("SDL_CreateRenderer error: %s\n", SDL_GetError());
         return false;
@@ -60,7 +60,7 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
         return false;
     }
 
-	m_pEventManager = EventManager::getInstance();
+    m_pEventManager = EventManager::getInstance();
 
     m_pTextureManager = GCC_NEW TextureManager;
     if(!m_pTextureManager->init(m_doc.FirstChildElement("Textures"))){
@@ -71,24 +71,24 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     }
     //SDL_SetWindowIcon(m_pWindow, IMG_Load(m_pTextureManager->getTexturePath("ICON").c_str()));
 
-	m_pMapManager = GCC_NEW MapManager;
-	if(!m_pMapManager->init("assets/maps.xml")){
-		printf("MapManager failed to initialize\n");
-		return false;
-	}
+    m_pMapManager = GCC_NEW MapManager;
+    if(!m_pMapManager->init("assets/maps.xml")){
+        printf("MapManager failed to initialize\n");
+        return false;
+    }
 
-	m_pAPFactory = SpriteAnimationFactory::getInstance();
-	if(!m_pAPFactory->init("assets/animation.xml")){
-		printf("AnimationPlayerFactory failed to initialize\n");
-		return false;
-	}
-	if(!m_monsterDB.init("assets/Mon1.txt")){
-		printf("MonsterDB failed to initialize\n");
-		return false;
-	}
+    m_pAPFactory = SpriteAnimationFactory::getInstance();
+    if(!m_pAPFactory->init("assets/animation.xml")){
+        printf("AnimationPlayerFactory failed to initialize\n");
+        return false;
+    }
+    if(!m_monsterDB.init("assets/Mon1.txt")){
+        printf("MonsterDB failed to initialize\n");
+        return false;
+    }
 
-	EventListenerDelegate levelMoveDelegate = fastdelegate::MakeDelegate(this, &Game::onLevelMove);
-	m_pEventManager->addListerner(levelMoveDelegate, ObjectMoveEventData::s_eventType);
+    EventListenerDelegate levelMoveDelegate = fastdelegate::MakeDelegate(this, &Game::onLevelMove);
+    m_pEventManager->addListerner(levelMoveDelegate, ObjectMoveEventData::s_eventType);
 
     m_pGameObjectFactory = GameObjectFactory::getInstance();
     m_pGameObjectFactory->init(m_doc.FirstChildElement("GameObjects"));
@@ -98,15 +98,15 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
     m_pGameObjectFactory->add("MenuResumeButton", MenuButton::creator);
     m_pGameObjectFactory->add("MenuMainButton", MenuButton::creator);
     m_pGameObjectFactory->add(Player::s_type, Player::creator);
-	m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
-	m_pGameObjectFactory->add(Monster::s_type, Monster::creator);
+    m_pGameObjectFactory->add(Entrance::s_type, Entrance::creator);
+    m_pGameObjectFactory->add(Monster::s_type, Monster::creator);
 
-	for(auto it: m_pGameObjectFactory->getGameObjectInfos()){
-		if(it.first[0] == 'N')
-		    m_pGameObjectFactory->add(it.first, NPCharacter::creator);
-	}
-	
-	m_pGameObjectFactory->add(Legend::s_type, Legend::creator);
+    for(auto it: m_pGameObjectFactory->getGameObjectInfos()){
+        if(it.first[0] == 'N')
+            m_pGameObjectFactory->add(it.first, NPCharacter::creator);
+    }
+    
+    m_pGameObjectFactory->add(Legend::s_type, Legend::creator);
 
     m_pGameStateMachine = GCC_NEW GameStateMachine;
     m_pGameStateMachine->init(m_doc.FirstChildElement("GameStates"));
@@ -121,10 +121,10 @@ bool Game::init(const std::string &title, int x, int y, int width, int height, b
 }
 
 void Game::onLevelMove(IEventDataPtr pEvent) {
-	auto p = std::static_pointer_cast<ObjectMoveEventData>(pEvent);
-	if (p->GetID() == LEVEL_ID) {
-		m_levelPos = p->getPos();
-	}
+    auto p = std::static_pointer_cast<ObjectMoveEventData>(pEvent);
+    if (p->GetID() == LEVEL_ID) {
+        m_levelPos = p->getPos();
+    }
 }
 
 bool Game::isRunning() const{
@@ -143,7 +143,7 @@ void Game::render(){
 
 void Game::update(){
     m_pGameStateMachine->update();
-	m_pEventManager->update();
+    m_pEventManager->update();
 }
 
 void Game::handleEvents(){
@@ -152,16 +152,16 @@ void Game::handleEvents(){
 
 void Game::destroy(){
     delete m_pGameStateMachine;
-	delete m_pGameObjectFactory;
-	delete m_pEventManager;
-	delete m_pAPFactory;
-	delete m_pMapManager;
+    delete m_pGameObjectFactory;
+    delete m_pEventManager;
+    delete m_pAPFactory;
+    delete m_pMapManager;
     delete m_pTextureManager;
     delete m_pInputHandler;
 
     SDL_DestroyRenderer(m_pRenderer);
     SDL_DestroyWindow(m_pWindow);
-	TTF_Quit();
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }

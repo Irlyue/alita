@@ -24,25 +24,25 @@ public:
 
 private:
 
-	int m_frame = 0;
+    int m_frame = 0;
 
-	GameMapPtr m_pgm;
+    GameMapPtr m_pgm;
 
-	void renderTileLayer();
+    void renderTileLayer();
     void renderLegend();
 
-	void onPlayerMove(IEventDataPtr pEvent);
-	void onCreateLevel(IEventDataPtr pEvent);
-	void onDestroyGameObject(IEventDataPtr pEvent);
-	bool initFromGameMap();
+    void onPlayerMove(IEventDataPtr pEvent);
+    void onCreateLevel(IEventDataPtr pEvent);
+    void onDestroyGameObject(IEventDataPtr pEvent);
+    bool initFromGameMap();
 
-	NPCharacter *createNPC(std::string roleID, Vector2D &initPos);
-	Entrance *createEntrance(std::string other, Vector2D &initPos);
-	Monster *createMonster(std::string roleID, Vector2D &initPos);
+    NPCharacter *createNPC(std::string roleID, Vector2D &initPos);
+    Entrance *createEntrance(std::string other, Vector2D &initPos);
+    Monster *createMonster(std::string roleID, Vector2D &initPos);
 
-	Vector2D searchAroundEntrance(const Vector2D &center);
-	
-	void destroy();
+    Vector2D searchAroundEntrance(const Vector2D &center);
+    
+    void destroy();
 };
 
 #endif

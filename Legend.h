@@ -5,19 +5,19 @@
 
 class Legend: public GameObject{
 public:
-	const static ObjectType s_type;
+    const static ObjectType s_type;
 
-	static GameObject *creator();
+    static GameObject *creator();
 
-	virtual const ObjectType &getObjectType() const {return s_type;}
+    virtual const ObjectType &getObjectType() const {return s_type;}
 
-	~Legend() {destroy();}
+    ~Legend() {destroy();}
 
-	virtual bool init(const XMLElement *doc);
+    virtual bool init(const XMLElement *doc);
 
-	virtual void draw();
+    virtual void draw();
 
-	virtual void destroy();
+    virtual void destroy();
 
 };
 #endif // !ALITA_LEGEND_H

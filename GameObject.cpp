@@ -4,15 +4,15 @@
 int GameObject::s_defaultGameObjectID = 0;
 
 void GameObject::removeAllDelegates(){
-	for(auto pair: m_delegates){
-		g_alita->getEventManager()->removeListerner(pair.second, pair.first);
-	}
+    for(auto pair: m_delegates){
+        g_alita->getEventManager()->removeListerner(pair.second, pair.first);
+    }
 
-	m_delegates.clear();
+    m_delegates.clear();
 }
 
 void GameObject::draw(){
-	auto &levelPos = g_alita->getLevelPos();
+    auto &levelPos = g_alita->getLevelPos();
     Game::getInstance()->getTextureManager()->drawFrame(
         m_textureID, m_pos.getX() - levelPos.getX(), m_pos.getY() - levelPos.getY(), m_width, m_height,
         m_currentRow, m_currentFrame, Game::getInstance()->getRenderer()

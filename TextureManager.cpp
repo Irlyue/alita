@@ -31,37 +31,37 @@ bool TextureManager::loadGlobalTextures(){
         std::string id = it->Attribute("id");
         std::string type = it->Value();
         if(type == "PackedImages"){
-			m_packedImagesInfos[id] = it;
+            m_packedImagesInfos[id] = it;
         }else if(type == "Texture"){
             SDL_Texture *pTexture = loadTexture(NP(root + FILE_DELIMITER + it->Attribute("path")));
-			m_textureMaps[id] = pTexture;
+            m_textureMaps[id] = pTexture;
             if(pTexture){
                 successCount++;
             }else{
                 failCount++;
                 success = false;
             }
-		}
+        }
     }
     printf("Load textures, %d successes and %d failures!\n", successCount, failCount);
 
-	// global textrues
-	loadPackedImages("GAME", false);
-	loadPackedImages("FLOOR", false);
-	loadPackedImages("RPG_1", false);
-	loadPackedImages("WEA_002", false);
-	loadPackedImages("WEA_040", false);
-	
+    // global textrues
+    loadPackedImages("GAME", false);
+    loadPackedImages("FLOOR", false);
+    loadPackedImages("RPG_1", false);
+    loadPackedImages("WEA_002", false);
+    loadPackedImages("WEA_040", false);
+    
     return success;
 }
 
 bool TextureManager::init(XMLElement *doc){
     m_pTextureInfos = doc;
 
-	EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &TextureManager::onPreLoadTextures);
-	g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
+    EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &TextureManager::onPreLoadTextures);
+    g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
 
-	return loadGlobalTextures();
+    return loadGlobalTextures();
 }
 
 
@@ -86,14 +86,14 @@ void TextureManager::drawFrame(const TextureID &tid, int x, int y, int w, int h,
 }
 
 void TextureManager::draw(const TextureID &tid, int x, int y, int w, int h, SDL_Renderer *pRenderer) {
-	SDL_Texture *p = getTexture(tid);
-	if (w == -1 || h == -1) {
-		SDL_QueryTexture(p, nullptr, nullptr, &w, &h);
-	}
+    SDL_Texture *p = getTexture(tid);
+    if (w == -1 || h == -1) {
+        SDL_QueryTexture(p, nullptr, nullptr, &w, &h);
+    }
 
-	SDL_Rect src = { 0, 0, w, h };
-	SDL_Rect dst = { x, y, w, h };
-	SDL_RenderCopy(pRenderer, p, &src, &dst);
+    SDL_Rect src = { 0, 0, w, h };
+    SDL_Rect dst = { x, y, w, h };
+    SDL_RenderCopy(pRenderer, p, &src, &dst);
 }
 
 
@@ -134,28 +134,28 @@ void TextureManager::destroy(){
 }
 
 std::shared_ptr<PackedImages> TextureManager::createPackedImages(std::string id){
-	XMLElement *it = m_packedImagesInfos[id];
-	std::string root = m_pTextureInfos->Attribute("folder");
-	std::string binaryPath = NP(root + FILE_DELIMITER + it->Attribute("binaryPath"));
-	std::string offsetsPath = NP(root + FILE_DELIMITER + it->Attribute("offsetsPath"));
+    XMLElement *it = m_packedImagesInfos[id];
+    std::string root = m_pTextureInfos->Attribute("folder");
+    std::string binaryPath = NP(root + FILE_DELIMITER + it->Attribute("binaryPath"));
+    std::string offsetsPath = NP(root + FILE_DELIMITER + it->Attribute("offsetsPath"));
 
-	auto p = std::make_shared<PackedImages>();
-	p->init(binaryPath, offsetsPath);
+    auto p = std::make_shared<PackedImages>();
+    p->init(binaryPath, offsetsPath);
 
-	return p;
+    return p;
 }
 
 // release the textures from previous game map
 void TextureManager::releaseLastGameMapTextures(){
-	
-	for (auto it : m_toDeleteTextures) {
-		auto findIt = m_textureMaps.find(it);
-		if (findIt != m_textureMaps.end()) {
-			SDL_DestroyTexture(findIt->second);
-			m_textureMaps.erase(findIt);
-		}
-	}
-	m_toDeleteTextures.clear();
+    
+    for (auto it : m_toDeleteTextures) {
+        auto findIt = m_textureMaps.find(it);
+        if (findIt != m_textureMaps.end()) {
+            SDL_DestroyTexture(findIt->second);
+            m_textureMaps.erase(findIt);
+        }
+    }
+    m_toDeleteTextures.clear();
 }
 
 // Preload the textures that are needed in a game map, including the following stuff:
@@ -169,57 +169,57 @@ void TextureManager::releaseLastGameMapTextures(){
 // ---------
 //     pEvent: a shared pointer to `MapCreatedEventData`
 void TextureManager::onPreLoadTextures(IEventDataPtr pEvent){
-	releaseLastGameMapTextures();
+    releaseLastGameMapTextures();
 
-	auto p = std::static_pointer_cast<MapCreatedEventData>(pEvent);
-	GameMapPtr pgm = p->getGameMap();
+    auto p = std::static_pointer_cast<MapCreatedEventData>(pEvent);
+    GameMapPtr pgm = p->getGameMap();
 
-	std::vector<std::shared_ptr<PackedImages>> fjPackedImages = {
-		std::make_shared<PackedImages>(),
-		createPackedImages("FJ_1"),
-		createPackedImages("FJ_2"),
-		createPackedImages("FJ_3"),
-		createPackedImages("FJ_4"),
-	};
-	for(int k = 0; k < pgm->getRows() * pgm->getCols(); k++){
-		int i = k / pgm->getCols();
-		int j = k % pgm->getCols();
+    std::vector<std::shared_ptr<PackedImages>> fjPackedImages = {
+        std::make_shared<PackedImages>(),
+        createPackedImages("FJ_1"),
+        createPackedImages("FJ_2"),
+        createPackedImages("FJ_3"),
+        createPackedImages("FJ_4"),
+    };
+    for(int k = 0; k < pgm->getRows() * pgm->getCols(); k++){
+        int i = k / pgm->getCols();
+        int j = k % pgm->getCols();
 
-		GameMapGrid &grid = (*pgm)(i, j);
-		auto roleID = grid.roleID;
-		auto tileID = grid.tileID;
-		auto other = grid.other;
-		auto floorID = grid.floorID;
+        GameMapGrid &grid = (*pgm)(i, j);
+        auto roleID = grid.roleID;
+        auto tileID = grid.tileID;
+        auto other = grid.other;
+        auto floorID = grid.floorID;
 
-		// load tile
-		std::string tileTextureID = "FJ_" + std::to_string(tileID);
-		if(tileID != -1 && m_textureMaps.find(tileTextureID) == m_textureMaps.end()){
-			auto texture = (*fjPackedImages[tileID/10000])[tileID%10000];
-			m_toDeleteTextures.push_back(tileTextureID);
-			m_textureMaps[tileTextureID] = texture;
-		}
+        // load tile
+        std::string tileTextureID = "FJ_" + std::to_string(tileID);
+        if(tileID != -1 && m_textureMaps.find(tileTextureID) == m_textureMaps.end()){
+            auto texture = (*fjPackedImages[tileID/10000])[tileID%10000];
+            m_toDeleteTextures.push_back(tileTextureID);
+            m_textureMaps[tileTextureID] = texture;
+        }
 
-		
-		if(roleID != ""){
-			if(roleID[0] == 'N'){
-				// load NPC
-				std::string npcID = "NPC_" + roleID.substr(roleID.size() - 3, 3);
-				if(m_textureMaps.find(npcID + "_0") == m_textureMaps.end())
-					loadPackedImages(npcID);
-			}
+        
+        if(roleID != ""){
+            if(roleID[0] == 'N'){
+                // load NPC
+                std::string npcID = "NPC_" + roleID.substr(roleID.size() - 3, 3);
+                if(m_textureMaps.find(npcID + "_0") == m_textureMaps.end())
+                    loadPackedImages(npcID);
+            }
 
-			if(roleID[0] == 'M'){
-				// load Monster
-				std::string monName = roleID.substr(1, roleID.size() - 1);
-				auto &info = g_alita->getMonsterDB()[monName];
-				std::string monID = std::to_string(info.Pic);
-				std::string monAnimationID = "MON_" + std::string(3 - monID.size(), '0') + monID;
+            if(roleID[0] == 'M'){
+                // load Monster
+                std::string monName = roleID.substr(1, roleID.size() - 1);
+                auto &info = g_alita->getMonsterDB()[monName];
+                std::string monID = std::to_string(info.Pic);
+                std::string monAnimationID = "MON_" + std::string(3 - monID.size(), '0') + monID;
 
-				if(m_textureMaps.find(monAnimationID + "_0") == m_textureMaps.end())
-					loadPackedImages(monAnimationID);
-			}
-		}
-	}
+                if(m_textureMaps.find(monAnimationID + "_0") == m_textureMaps.end())
+                    loadPackedImages(monAnimationID);
+            }
+        }
+    }
 }
 
 // Arguments
@@ -231,12 +231,12 @@ void TextureManager::onPreLoadTextures(IEventDataPtr pEvent){
 //         textures that are not specific to specific game maps, like floor
 //         textures.
 void TextureManager::loadPackedImages(std::string tid, bool toDelete){
-	auto pi = createPackedImages(tid);
-	for (int idx = 0; idx < pi->getNbImages(); idx++) {
-		std::string individualTid = tid + "_" + std::to_string(idx);
-		
-		m_textureMaps[individualTid] = (*pi)[idx];
-		if(toDelete)
-			m_toDeleteTextures.push_back(individualTid);
-	}
+    auto pi = createPackedImages(tid);
+    for (int idx = 0; idx < pi->getNbImages(); idx++) {
+        std::string individualTid = tid + "_" + std::to_string(idx);
+        
+        m_textureMaps[individualTid] = (*pi)[idx];
+        if(toDelete)
+            m_toDeleteTextures.push_back(individualTid);
+    }
 }

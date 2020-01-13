@@ -46,24 +46,24 @@ bool GameState::onExit() {
 };
 
 bool GameState::addGameObject(GameObject *pGameObj) {
-	auto findIt = m_gameObjects.find(pGameObj->getGameObjectID());
+    auto findIt = m_gameObjects.find(pGameObj->getGameObjectID());
 
-	if(findIt != m_gameObjects.cend()){
-		printf("Adding %s object with duplicate ids!\n", pGameObj->getObjectType().c_str());
-		return false;
-	}else{
-		m_gameObjects[pGameObj->getGameObjectID()] = pGameObj;
-		return true;
-	}
+    if(findIt != m_gameObjects.cend()){
+        printf("Adding %s object with duplicate ids!\n", pGameObj->getObjectType().c_str());
+        return false;
+    }else{
+        m_gameObjects[pGameObj->getGameObjectID()] = pGameObj;
+        return true;
+    }
 };
 
 bool GameState::removeGameObject(GameObjectID objID){
-	auto findIt = m_gameObjects.find(objID);
-	if(findIt != m_gameObjects.end()){
-		delete findIt->second;
-		m_gameObjects.erase(findIt);
-		return true;
-	}else{
-		return false;
-	}
+    auto findIt = m_gameObjects.find(objID);
+    if(findIt != m_gameObjects.end()){
+        delete findIt->second;
+        m_gameObjects.erase(findIt);
+        return true;
+    }else{
+        return false;
+    }
 }

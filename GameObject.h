@@ -13,7 +13,7 @@ using DelegatePair = std::pair<EventType, EventListenerDelegate>;
 class GameObject{
 public:
     virtual bool init(const XMLElement *doc);
-	virtual ~GameObject() {destroy();}
+    virtual ~GameObject() {destroy();}
 
     virtual void destroy();
 
@@ -26,7 +26,7 @@ public:
     Vector2D &getVelocity() {return m_velocity;}
     Vector2D &getPos() {return m_pos;}
 
-	void setPos(const Vector2D &pos){m_pos = pos;}
+    void setPos(const Vector2D &pos){m_pos = pos;}
 
     void setTextureID(const TextureID &tid) {m_textureID = tid;}
 
@@ -34,11 +34,11 @@ public:
         return m_gameObjectID;
     }
 
-	void removeAllDelegates();
+    void removeAllDelegates();
 
 protected:
 
-	std::vector<DelegatePair> m_delegates;
+    std::vector<DelegatePair> m_delegates;
     static int s_defaultGameObjectID;
     Vector2D m_pos;
     Vector2D m_velocity;

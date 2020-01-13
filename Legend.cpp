@@ -4,17 +4,17 @@
 const ObjectType Legend::s_type = "Legend";
 
 GameObject *Legend::creator(){
-	return GCC_NEW Legend;
+    return GCC_NEW Legend;
 }
 
 void Legend::destroy(){
 }
 
 bool Legend::init(const XMLElement *doc){
-	if(!GameObject::init(doc))
-		return false;
+    if(!GameObject::init(doc))
+        return false;
 
-	return true;
+    return true;
 }
 
 void Legend::draw(){

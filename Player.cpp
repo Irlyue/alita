@@ -21,12 +21,12 @@ bool Player::init(const XMLElement *doc){
     m_currentFrame = 0;
 
     m_pAnimation = g_alita->getAnimationPlayerFactory()->create("RPG_1");
-	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
-	m_pWeaponAnimation = g_alita->getAnimationPlayerFactory()->create("WEA_002");
-	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+    m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+    m_pWeaponAnimation = g_alita->getAnimationPlayerFactory()->create("WEA_002");
+    m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
 
-	EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &Player::onMapCreated);
-	g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
+    EventListenerDelegate mapCreatedDelegate = fastdelegate::MakeDelegate(this, &Player::onMapCreated);
+    g_alita->getEventManager()->addListerner(mapCreatedDelegate, MapCreatedEventData::s_eventType);
 
     return true;
 
@@ -67,81 +67,81 @@ void Player::update(){
     GameObject::update();
     auto pInputHandler = InputHandler::getInstance();
 
-	Vector2D runVelocity(1, 1);
-	Vector2D walkVelocity(1, 1);
+    Vector2D runVelocity(1, 1);
+    Vector2D walkVelocity(1, 1);
 
-	if(m_pAnimation->getMotion() == MOTION_STILL || m_pAnimation->isFinished()){
+    if(m_pAnimation->getMotion() == MOTION_STILL || m_pAnimation->isFinished()){
 
-		int motion = MOTION_STILL;
-		m_acceleration.setX(0.);
-		m_acceleration.setY(0.);
+        int motion = MOTION_STILL;
+        m_acceleration.setX(0.);
+        m_acceleration.setY(0.);
 
-		// MOTION_RUN
-		if (pInputHandler->isKeyDown(SDL_SCANCODE_W)) {
-			motion = MOTION_RUN;
-			m_acceleration.setY(-runVelocity.getY());
-		}else if (pInputHandler->isKeyDown(SDL_SCANCODE_S)) {
-			motion = MOTION_RUN;
-			m_acceleration.setY(runVelocity.getY());
-		}
+        // MOTION_RUN
+        if (pInputHandler->isKeyDown(SDL_SCANCODE_W)) {
+            motion = MOTION_RUN;
+            m_acceleration.setY(-runVelocity.getY());
+        }else if (pInputHandler->isKeyDown(SDL_SCANCODE_S)) {
+            motion = MOTION_RUN;
+            m_acceleration.setY(runVelocity.getY());
+        }
 
-		if (pInputHandler->isKeyDown(SDL_SCANCODE_A)) {
-			motion = MOTION_RUN;
-			m_acceleration.setX(-runVelocity.getX());
-		}else if (pInputHandler->isKeyDown(SDL_SCANCODE_D)) {
-			motion = MOTION_RUN;
-			m_acceleration.setX(runVelocity.getX());
-		}
-		int orientation = calcOrientation(m_acceleration);
+        if (pInputHandler->isKeyDown(SDL_SCANCODE_A)) {
+            motion = MOTION_RUN;
+            m_acceleration.setX(-runVelocity.getX());
+        }else if (pInputHandler->isKeyDown(SDL_SCANCODE_D)) {
+            motion = MOTION_RUN;
+            m_acceleration.setX(runVelocity.getX());
+        }
+        int orientation = calcOrientation(m_acceleration);
 
-		if (pInputHandler->getBtnState(SDL_BUTTON_RIGHT)) {
-			orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
-			motion = MOTION_MAGIC_ATTACK;
-		}else if (pInputHandler->getBtnState(SDL_BUTTON_LEFT)) {
-			orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
-			motion = MOTION_DIRECT_ATTACK;
-		}
+        if (pInputHandler->getBtnState(SDL_BUTTON_RIGHT)) {
+            orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
+            motion = MOTION_MAGIC_ATTACK;
+        }else if (pInputHandler->getBtnState(SDL_BUTTON_LEFT)) {
+            orientation = calcSector(pInputHandler->getMousePos() + g_alita->getLevelPos() - m_pos);
+            motion = MOTION_DIRECT_ATTACK;
+        }
 
-		if(orientation != -1){
-			m_pAnimation->VSwitchOrientation(orientation);
-			m_pWeaponAnimation->VSwitchOrientation(orientation);
-		}
+        if(orientation != -1){
+            m_pAnimation->VSwitchOrientation(orientation);
+            m_pWeaponAnimation->VSwitchOrientation(orientation);
+        }
 
-		if(motion != MOTION_STILL || m_pAnimation->isFinished()){
-			m_pAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
-			m_pWeaponAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
-		}else{
-			m_pos = m_pAnimation->VUpdate();
-			m_pWeaponAnimation->VUpdate();
-		}
+        if(motion != MOTION_STILL || m_pAnimation->isFinished()){
+            m_pAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
+            m_pWeaponAnimation->VSwitchMotion(motion, m_pos, m_acceleration);
+        }else{
+            m_pos = m_pAnimation->VUpdate();
+            m_pWeaponAnimation->VUpdate();
+        }
 
-	}else{
-		m_pos = m_pAnimation->VUpdate();
-		m_pWeaponAnimation->VUpdate();
-	}
+    }else{
+        m_pos = m_pAnimation->VUpdate();
+        m_pWeaponAnimation->VUpdate();
+    }
 
-	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
-	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+    auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(getGameObjectID(), getPos());
+    g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
 }
 
 void Player::draw(){
 
-	m_pWeaponAnimation->VDraw();
+    m_pWeaponAnimation->VDraw();
     m_pAnimation->VDraw();
 
-	auto &levelPos = g_alita->getLevelPos();
+    auto &levelPos = g_alita->getLevelPos();
     SDL_Rect rect = {m_pos.getX() - levelPos.getX(), m_pos.getY() - levelPos.getY(), 5, 5};
     SDL_SetRenderDrawColor(g_alita->getRenderer(), 0xff, 0x00, 0x00, 0xff);
     SDL_RenderFillRect(g_alita->getRenderer(), &rect);
 }
 
 void Player::onMapCreated(IEventDataPtr pEvent){
-	auto p = std::static_pointer_cast<MapCreatedEventData>(pEvent);
-	// switch to new position
-	m_pos = p->getInitPos();
-	m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
-	m_pWeaponAnimation->VSwitchMotion(MOTION_STILL, m_pos, { 0., 0. });
+    auto p = std::static_pointer_cast<MapCreatedEventData>(pEvent);
+    // switch to new position
+    m_pos = p->getInitPos();
+    m_pAnimation->VSwitchMotion(MOTION_STILL, m_pos, {0., 0.});
+    m_pWeaponAnimation->VSwitchMotion(MOTION_STILL, m_pos, { 0., 0. });
 
-	auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(PLAYER_ID, m_pos);
-	g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
+    auto pPlayerMoveEvent = std::make_shared<ObjectMoveEventData>(PLAYER_ID, m_pos);
+    g_alita->getEventManager()->queueEvent(pPlayerMoveEvent);
 }

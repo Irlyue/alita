@@ -8,31 +8,31 @@
 
 using MonsterName = std::string;
 struct MonsterInfo{
-	MonsterName MonName;
-	int Type;
-	int Pic;
-	std::string Wav;
-	int HP, Dc, DcMax, Df, DfMax;
-	int Mf, MfMax, Nb, Eye, StepSpeed;
-	int DcSpeed, DcSleep, XiHP, MaBi, ZD;
-	int ActType, Ex;
-	std::string Items;
-	int R, G, B, A;
-	int Event;
+    MonsterName MonName;
+    int Type;
+    int Pic;
+    std::string Wav;
+    int HP, Dc, DcMax, Df, DfMax;
+    int Mf, MfMax, Nb, Eye, StepSpeed;
+    int DcSpeed, DcSleep, XiHP, MaBi, ZD;
+    int ActType, Ex;
+    std::string Items;
+    int R, G, B, A;
+    int Event;
 };
 
 std::istream &operator>>(std::istream &is, MonsterInfo &info);
 
 class MonsterDB{
 public:
-	bool init(std::string path);
-	
-	const MonsterInfo &operator[](MonsterName name);
+    bool init(std::string path);
+    
+    const MonsterInfo &operator[](MonsterName name);
 
-	int getNbMonsters() const;
+    int getNbMonsters() const;
 
 private:
-	std::map<MonsterName, MonsterInfo> m_db;
+    std::map<MonsterName, MonsterInfo> m_db;
 };
 
 

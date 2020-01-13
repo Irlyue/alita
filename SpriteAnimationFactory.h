@@ -6,22 +6,22 @@
 
 class SpriteAnimationFactory{
 public:
-	static SpriteAnimationFactory *getInstance();
+    static SpriteAnimationFactory *getInstance();
 
-	static SpriteAnimationFactory *s_apFactory;
+    static SpriteAnimationFactory *s_apFactory;
 
-	SpriteAnimationPtr create(AnimationID aid);
+    SpriteAnimationPtr create(AnimationID aid);
 
-	bool init(std::string path);
+    bool init(std::string path);
 
 private:
-	SpriteAnimationFactory() = default;
+    SpriteAnimationFactory() = default;
 
-	SpriteOffsetsPtr loadOffsets(std::string path);
+    SpriteOffsetsPtr loadOffsets(std::string path);
 
-	XMLDocument m_doc;
-	std::map<AnimationID, XMLElement*> m_animationMaps;
-	std::map<std::string, SpriteOffsetsPtr> m_offsetCache;
+    XMLDocument m_doc;
+    std::map<AnimationID, XMLElement*> m_animationMaps;
+    std::map<std::string, SpriteOffsetsPtr> m_offsetCache;
 };
 
 #endif

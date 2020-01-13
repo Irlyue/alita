@@ -9,14 +9,14 @@
 
 class MapManager{
 public:
-	~MapManager(){destroy();}
-	bool init(std::string path);
-	GameMapPtr create(GameMapID gid);
+    ~MapManager(){destroy();}
+    bool init(std::string path);
+    GameMapPtr create(GameMapID gid);
 
-	void destroy();
+    void destroy();
 
 private:
-	std::map<GameMapID, std::string> m_mapPaths;
+    std::map<GameMapID, std::string> m_mapPaths;
 };
 
 #endif

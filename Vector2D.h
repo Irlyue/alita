@@ -6,7 +6,7 @@
 class Vector2D{
 public:
     Vector2D(): m_x(0), m_y(0){}
-	Vector2D(const Vector2D &rhs): m_x(rhs.m_x), m_y(rhs.m_y){}
+    Vector2D(const Vector2D &rhs): m_x(rhs.m_x), m_y(rhs.m_y){}
     Vector2D(double x, double y): m_x(x), m_y(y){}
 
     double getX() const {return m_x;}

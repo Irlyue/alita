@@ -5,10 +5,10 @@
 #include <algorithm>
 
 PackedImages::~PackedImages(){
-	if(m_pBuffer)
-		delete[] m_pBuffer;
+    if(m_pBuffer)
+        delete[] m_pBuffer;
 
-	m_binaryFs.close();
+    m_binaryFs.close();
 }
 
 static int getMaxBufferSize(const std::vector<int> &offsets){
@@ -34,35 +34,35 @@ bool PackedImages::init(std::string binary_path, std::string offsets_path){
     while(fs>>t>>c){
         m_offsets.push_back(t);
     }
-	// remove duplicate offsets
-	m_offsets.erase(std::unique(m_offsets.begin(), m_offsets.end()), m_offsets.end());
+    // remove duplicate offsets
+    m_offsets.erase(std::unique(m_offsets.begin(), m_offsets.end()), m_offsets.end());
     fs.close();
 
-	int maxBufferSize = getMaxBufferSize(m_offsets);
-	m_pBuffer = GCC_NEW char[maxBufferSize];
-	   
-	std::vector<std::pair<int, SDL_Texture*>> textures;
-	m_binaryFs.open(binary_path, std::fstream::binary | std::fstream::in);
-	if (!m_binaryFs) {
-		printf("Failed to open `%s`!\n", binary_path.c_str());
-		return false;
-	}
+    int maxBufferSize = getMaxBufferSize(m_offsets);
+    m_pBuffer = GCC_NEW char[maxBufferSize];
+       
+    std::vector<std::pair<int, SDL_Texture*>> textures;
+    m_binaryFs.open(binary_path, std::fstream::binary | std::fstream::in);
+    if (!m_binaryFs) {
+        printf("Failed to open `%s`!\n", binary_path.c_str());
+        return false;
+    }
 
     return true;
 }
 
 
 SDL_Texture *PackedImages::operator[](int i){
-	int nbBytes = m_offsets[i + 1] - m_offsets[i];
-	m_binaryFs.seekg(m_offsets[i]);
-	m_binaryFs.read(m_pBuffer, nbBytes);
-	SDL_RWops *ops = SDL_RWFromMem(m_pBuffer, nbBytes);
+    int nbBytes = m_offsets[i + 1] - m_offsets[i];
+    m_binaryFs.seekg(m_offsets[i]);
+    m_binaryFs.read(m_pBuffer, nbBytes);
+    SDL_RWops *ops = SDL_RWFromMem(m_pBuffer, nbBytes);
 
-	SDL_Surface *pSurface = IMG_Load_RW(ops, 1);
-	if (m_colorKey)
-		SDL_SetColorKey(pSurface, SDL_TRUE, SDL_MapRGB(pSurface->format, 0x00, 0x00, 0x00));
-	SDL_Texture *pTexture = SDL_CreateTextureFromSurface(g_alita->getRenderer(), pSurface);
-	SDL_FreeSurface(pSurface);
+    SDL_Surface *pSurface = IMG_Load_RW(ops, 1);
+    if (m_colorKey)
+        SDL_SetColorKey(pSurface, SDL_TRUE, SDL_MapRGB(pSurface->format, 0x00, 0x00, 0x00));
+    SDL_Texture *pTexture = SDL_CreateTextureFromSurface(g_alita->getRenderer(), pSurface);
+    SDL_FreeSurface(pSurface);
 
-	return pTexture;
+    return pTexture;
 }

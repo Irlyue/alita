@@ -68,7 +68,7 @@ void GameStateMachine::destroy(){
         m_gameStates.pop_back();
     }
 
-	printf("GameStateMachine destroyed!\n");
+    printf("GameStateMachine destroyed!\n");
 }
 
 GameStatePtr GameStateMachine::currentState(){

@@ -1,12 +1,12 @@
 #include "CallBack.h"
 
 void cbChangeToPlayState(){
-	GameStatePtr pState = Game::getInstance()->getStateMachine()->create("PlayState");
+    GameStatePtr pState = Game::getInstance()->getStateMachine()->create("PlayState");
     Game::getInstance()->getStateMachine()->changeState(pState);
 }
 
 void cbChangeToStartMenuState(){
-	GameStatePtr pState = Game::getInstance()->getStateMachine()->create("StartMenuState");
+    GameStatePtr pState = Game::getInstance()->getStateMachine()->create("StartMenuState");
     Game::getInstance()->getStateMachine()->changeState(pState);
 }
 

@@ -14,9 +14,9 @@
 class GameObjectFactory{
 public:
 
-	~GameObjectFactory() {destroy();}
+    ~GameObjectFactory() {destroy();}
 
-	void destroy();
+    void destroy();
 
     bool init(XMLElement *doc);
 

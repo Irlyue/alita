@@ -10,27 +10,27 @@ class Monster: public GameObject{
 public:
     virtual ~Monster() {};
 
-	const static ObjectType s_type;
+    const static ObjectType s_type;
 
     void onTheFlyInit(SpriteAnimationPtr pAnimation, Vector2D initPos);
 
-	static GameObject *creator();
+    static GameObject *creator();
 
-	virtual void update();
+    virtual void update();
 
-	virtual void draw();
+    virtual void draw();
 
-	virtual const ObjectType &getObjectType() const { return s_type; }
+    virtual const ObjectType &getObjectType() const { return s_type; }
 
-	void setSpriteAnimation(SpriteAnimationPtr pAn) { m_pAnimation = pAn; }
+    void setSpriteAnimation(SpriteAnimationPtr pAn) { m_pAnimation = pAn; }
 
 private:
 
     bool isInsideCamera() const;
 
-	std::string m_name;
+    std::string m_name;
 
-	SpriteAnimationPtr m_pAnimation;
+    SpriteAnimationPtr m_pAnimation;
 
     MonsterStateMachine m_msMachine;
 

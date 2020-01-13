@@ -70,11 +70,11 @@ bool GameMap::init(std::string path){
 
 std::ostream &operator<<(std::ostream &os, GameMap &gm){
 
-	for(int i = 0; i < gm.getRows(); i++){
-		for(int j = 0; j < gm.getCols(); j++){
-			GameMapGrid &gmg = gm(i, j);
-			os << gmg.floorID << '*';
-			os << gmg.tileID << '*';
+    for(int i = 0; i < gm.getRows(); i++){
+        for(int j = 0; j < gm.getCols(); j++){
+            GameMapGrid &gmg = gm(i, j);
+            os << gmg.floorID << '*';
+            os << gmg.tileID << '*';
             if(gmg.other != ""){
                 os << '(' << gmg.other << ')';
             }
@@ -82,13 +82,13 @@ std::ostream &operator<<(std::ostream &os, GameMap &gm){
                 os << '(' << gmg.roleID << ')';
             }
             os << ',';
-		}
-		os<<std::endl;
-	}
+        }
+        os<<std::endl;
+    }
 
-	return os;
+    return os;
 }
 
 void GameMap::destroy(){
-	printf("GameMap %s destroyed!\n", m_name.c_str());
+    printf("GameMap %s destroyed!\n", m_name.c_str());
 }

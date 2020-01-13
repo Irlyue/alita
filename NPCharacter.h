@@ -10,7 +10,7 @@ public:
 
     static GameObject *creator();
 
-	virtual void update();
+    virtual void update();
 
     virtual bool init(const XMLElement *doc);
 
@@ -18,13 +18,13 @@ public:
 
     virtual const ObjectType &getObjectType() const {return s_type;}
 
-	void setSpriteAnimation(SpriteAnimationPtr pAn) {m_pAnimation = pAn;}
+    void setSpriteAnimation(SpriteAnimationPtr pAn) {m_pAnimation = pAn;}
 
 private:
 
     std::string m_name;
 
-	SpriteAnimationPtr m_pAnimation;
+    SpriteAnimationPtr m_pAnimation;
 };
 
 #endif

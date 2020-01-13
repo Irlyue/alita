@@ -13,7 +13,7 @@ using GameStatePtr = std::shared_ptr<GameState>;
 
 class GameStateMachine{
 public:
-	~GameStateMachine(){destroy();}
+    ~GameStateMachine(){destroy();}
 
     void update();
 
@@ -21,7 +21,7 @@ public:
 
     bool init(XMLElement *pDoc);
 
-	GameStatePtr currentState();
+    GameStatePtr currentState();
 
     void pushState(GameStatePtr pGameState);
 
@@ -31,7 +31,7 @@ public:
 
     void destroy();
 
-	GameStatePtr create(const GameStateType &gameStateType);
+    GameStatePtr create(const GameStateType &gameStateType);
 
     void add(const ObjectType &objType, GameStateCreator creator);
 

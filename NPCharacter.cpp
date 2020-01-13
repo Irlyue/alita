@@ -13,11 +13,11 @@ bool NPCharacter::init(const XMLElement *doc){
 }
 
 void NPCharacter::draw(){
-	m_pAnimation->VDraw();
+    m_pAnimation->VDraw();
 }
 
 void NPCharacter::update(){
-	GameObject::update();
+    GameObject::update();
 
-	m_pAnimation->VUpdate();
+    m_pAnimation->VUpdate();
 }

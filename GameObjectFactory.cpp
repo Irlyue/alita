@@ -12,17 +12,17 @@ GameObjectFactory *GameObjectFactory::getInstance(){
 
 bool GameObjectFactory::init(XMLElement *doc){
     for(auto it = doc->FirstChildElement(); it; it = it->NextSiblingElement()){
-		m_gameObjectInfos[it->Value()] = it;
-	}
+        m_gameObjectInfos[it->Value()] = it;
+    }
 
-	// for NPC
-	for(auto it = doc->FirstChildElement("NPCharacters")->FirstChildElement(); it; it = it->NextSiblingElement()){
-		m_gameObjectInfos[it->Attribute("code")] = it;
-	}
+    // for NPC
+    for(auto it = doc->FirstChildElement("NPCharacters")->FirstChildElement(); it; it = it->NextSiblingElement()){
+        m_gameObjectInfos[it->Attribute("code")] = it;
+    }
 
-	// for Monster
+    // for Monster
 
-	return true;
+    return true;
 }
 
 void GameObjectFactory::add(const ObjectType &objType, GameObjectCreator creator){
@@ -42,5 +42,5 @@ GameObject *GameObjectFactory::create(const ObjectType &objType){
 }
 
 void GameObjectFactory::destroy(){
-	printf("GameObjectFactory destroyed!\n");
+    printf("GameObjectFactory destroyed!\n");
 }
