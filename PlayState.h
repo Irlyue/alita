@@ -38,7 +38,7 @@ private:
 
 	NPCharacter *createNPC(std::string roleID, Vector2D &initPos);
 	Entrance *createEntrance(std::string other, Vector2D &initPos);
-	Monster *PlayState::createMonster(std::string roleID, Vector2D &initPos);
+	Monster *createMonster(std::string roleID, Vector2D &initPos);
 
 	Vector2D searchAroundEntrance(const Vector2D &center);
 	

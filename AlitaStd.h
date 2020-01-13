@@ -15,8 +15,13 @@ using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
 
 #if defined DEBUG
-static int counter = 0;
+#if defined WIN32
 #define GCC_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#else
+#define GCC_NEW new
+#endif
+#else
+#define GCC_NEW new
 #endif
 
 
@@ -26,6 +31,7 @@ static int counter = 0;
 #define FILE_DELIMITER "\\"
 #else
 #define FILE_DELIMITER "/"
+#define sprintf_s sprintf
 #endif
 
 #define ABS(x) (x > 0 ? x : -x)
