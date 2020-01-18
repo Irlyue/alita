@@ -32,15 +32,12 @@ void Entrance::addGrid(const Vector2D &grid) {
 }
 
 void Entrance::onPlayerMove(IEventDataPtr pEvent){
-    if(isUsed())
-        return;
     auto p = std::static_pointer_cast<ObjectMoveEventData>(pEvent);
 
     if(p->GetID() == PLAYER_ID && isPlayerInsideEntrance(p->getPos())){
         auto pCreateLevelEvent = std::make_shared<CreateLevelEventData>(m_toWhere, m_enterPos);
         g_alita->getEventManager()->queueEvent(pCreateLevelEvent);
 
-        m_used = true;
     }
 }
 

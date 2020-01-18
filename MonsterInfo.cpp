@@ -21,6 +21,10 @@ int MonsterDB::getNbMonsters() const {
     return m_db.size();
 }
 
+bool MonsterDB::existsMonster(const MonsterName &name) const{
+    return m_db.find(name) != m_db.end();
+}
+
 bool MonsterDB::init(std::string path){
     std::fstream fs;
     fs.open(path, std::fstream::in);
@@ -45,11 +49,5 @@ bool MonsterDB::init(std::string path){
 }
 
 const MonsterInfo &MonsterDB::operator[](MonsterName name){
-    auto findIt = m_db.find(name);
-    if(findIt == m_db.end()){
-        printf("No such monster as %s\n", name.c_str());
-        return MonsterInfo();
-
-    }
-    return findIt->second;
+    return m_db[name];
 }

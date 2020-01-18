@@ -20,12 +20,9 @@ public:
 
     void onPlayerMove(IEventDataPtr pEvent);
 
-    bool isUsed() const {return m_used;}
-
 private:
     std::string m_toWhere;
     Vector2D m_enterPos;
-    bool m_used = false;
 
     // recording the grids (j, i) occupied by the entrance
     std::vector<Vector2D> m_areas;

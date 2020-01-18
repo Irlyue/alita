@@ -26,6 +26,8 @@ std::istream &operator>>(std::istream &is, MonsterInfo &info);
 class MonsterDB{
 public:
     bool init(std::string path);
+
+    bool existsMonster(const MonsterName &name) const;
     
     const MonsterInfo &operator[](MonsterName name);
 
